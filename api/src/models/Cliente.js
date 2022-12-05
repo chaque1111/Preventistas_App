@@ -126,10 +126,10 @@ module.exports = (sequelize) => {
                      type: DataTypes.STRING,
                      allowNull: true,
                     },
-                    // fechaAlta:{
-                    //   type: DataTypes.STRING,
-                    //   allowNull: true
-                    //  },
+                    fechaAlta:{
+                      type: DataTypes.STRING,
+                      allowNull: true
+                     },
                   observaciones: {
                     type: DataTypes.STRING(1200),
                     allowNull: true

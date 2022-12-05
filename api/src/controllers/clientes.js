@@ -43,7 +43,7 @@ const PrecargaClientes = async () => {
                  percIBTasa: e.PercIBTasa>0? e.PercIBTasa : e.PercIBTasa,
                  activo: e.Activo===true? e.Activo : false,
                  fechaUC: e.FechaUC? e.FechaUC : "not found",
-                //  fechaAlta: e.FechaAlta? FechaAlta : "not found",
+                 fechaAlta: e.FechaAlta? e.FechaAlta : "not found",
                  leyF: e.LeyF ? e.LeyF : null,
                  leyR: e.LeyR ? e.LeyR : null,
                  actLista: e.ActLista!==false ? e.actLista : false,
