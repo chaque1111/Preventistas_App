@@ -1,6 +1,7 @@
 const { DATE } = require("sequelize");
 const XLSX = require("xlsx");
 const {Cliente} = require("../db");
+
 const filename = "C:\\Users\\alex\\Documents\\Henry\\PreventistasApp\\PreventistasApp\\api\\Clientes.xlsx"
 
 const readOpts = { // <--- need these settings in readFile options
@@ -64,10 +65,11 @@ const PrecargaClientes = async () => {
                  actLista: e.ActLista!==false ? e.actLista : false,
                  email: e.email? e.email: "not found",
                  observaciones: e.Oservaciones? e.Oservaciones : "not found",
+
             }
         })
 
-         await Cliente.bulkCreate(arrayC)
+        await Cliente.bulkCreate(arrayC)
         
     } catch (e) {
         console.log(e)
