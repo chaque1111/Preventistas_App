@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, UUID, UUIDV4 } = require('sequelize');
 // Exportamos una funcion que define el modelo
 // Luego le injectamos la conexion a sequelize.
 module.exports = (sequelize) => {
@@ -6,6 +6,7 @@ module.exports = (sequelize) => {
   sequelize.define('cliente', {
     id: {
       type: DataTypes.INTEGER,
+      
       primaryKey: true
     },
     name: {
@@ -14,11 +15,7 @@ module.exports = (sequelize) => {
     },
     rzsocial:{ 
       type: DataTypes.STRING,
-      allowNull: false,
-    },
-    nomFant:{
-      type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     direccion:{
       type: DataTypes.STRING,
@@ -37,7 +34,7 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     zona: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     whatsapp: {
@@ -49,7 +46,7 @@ module.exports = (sequelize) => {
       allowNull: true,
       defaultValue: false,
     },
-    tipoDocument: {
+   tipoDocumento: {
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -61,109 +58,110 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    categorias: {
-      type: DataTypes.STRING,
+    // categoria: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    // },
+    // nombreVendedor: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    // },
+    // saldo: {
+    //   type: DataTypes.DECIMAL(13,2),
+    //   allowNull: true,
+    //   defaultValue: null,
+    // },
+    // observaciones: {
+    //   type: DataTypes.STRING(2000),
+    //   allowNull: true
+    // },
+    // contacto: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    // },
+    // listaPrecios: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: true,
+    // },
+  //   condVta: {
+  //   type: DataTypes.STRING,
+  //   allowNull: true
+  //  },
+  //  credito: {
+  //    type: DataTypes.INTEGER,
+  //    allowNull: true,
+  //  },
+  //  bonif: {
+  //    type: DataTypes.STRING,
+  //    allowNull: true,
+  //  },
+  //  abasto: {
+  //    type: DataTypes.BOOLEAN,
+  //    allowNull: true,
+  //    defaultValue: false,
+  //  },
+  //  percIBTasa: {
+  //    type: DataTypes.DECIMAL(4,2),
+  //    allowNull: true
+  //  },
+  //  LeyF: {
+  //      type: DataTypes.STRING,
+  //      allowNull: true,
+  //  },
+  //  LeyR: {
+  //      type: DataTypes.STRING,
+  //      allowNull: true,
+  //  },
+  //  activo: {
+  //    type: DataTypes.BOOLEAN,
+  //    allowNull: false,
+  //    defaultValue: true,
+  //  },
+    fechaUC:{
+      type: DataTypes.DATEONLY,
       allowNull: true,
+    
     },
-    nombreVendedor: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    saldo: {
-      type: DataTypes.DECIMAL(13,2),
-      allowNull: true,
-      defaultValue: null
-    },
-    observaciones: {
-      type: DataTypes.STRING(1000),
-      allowNull: true
-    },
-    contacto: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    listaPrecios: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    condVta: {
-    type: DataTypes.STRING,
-    allowNull: true
-   },
-   credito: {
-     type: DataTypes.INTEGER,
-     allowNull: true,
-   },
-   bonif: {
-     type: DataTypes.STRING,
-     allowNull: true,
-   },
-   abasto: {
-     type: DataTypes.BOOLEAN,
-     allowNull: true,
-     defaultValue: false,
-   },
-   percIBTasa: {
-     type: DataTypes.DECIMAL(4,2),
-     allowNull: true
-   },
-   LeyF: {
-       type: DataTypes.STRING,
-       allowNull: true,
-   },
-   LeyR: {
-       type: DataTypes.STRING,
-       allowNull: true,
-   },
-   activo: {
-     type: DataTypes.BOOLEAN,
-     allowNull: false,
-     defaultValue: true,
-   },
-   fechaUC:{
-     type: DataTypes.STRING,
-     allowNull: false,
-   },
-   actLista: {
-     type: DataTypes.BOOLEAN,
-     allowNull: false,
-     defaultValue: true
-   },
-   email: {
-     type: DataTypes.STRING,
-     allowNull: true,
-   },
-   web: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  llamar: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  pasar: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  observCobranza:{
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-   fechaAlta:{
-     type: DataTypes.STRING,
-     allowNull: true
-   },
-   fechaRepos: {
-     type: DataTypes.STRING,
-     allowNull: true,
-   },
-   nroProv: {
-     type: DataTypes.STRING,
-     allowNull: true,
-   },
-   lugarEntrega:{
-     type: DataTypes.STRING,
-     allowNull: true,
-   }
-  });
+  //  actLista: {
+  //    type: DataTypes.BOOLEAN,
+  //    allowNull: false,
+  //    defaultValue: true
+  //  },
+  //  email: {
+  //    type: DataTypes.STRING,
+  //    allowNull: true,
+  //  },
+  //  web: {
+  //   type: DataTypes.STRING,
+  //   allowNull: true,
+  // },
+  // llamar: {
+  //   type: DataTypes.STRING,
+  //   allowNull: true,
+  // },
+  // pasar: {
+  //   type: DataTypes.STRING,
+  //   allowNull: true,
+  // },
+  // observCobranza:{
+  //   type: DataTypes.STRING,
+  //   allowNull: true,
+  // },
+  //  fechaAlta:{
+  //    type: DataTypes.STRING,
+  //    allowNull: true
+  //  },
+  //  fechaRepos: {
+  //    type: DataTypes.STRING,
+  //    allowNull: true,
+  //  },
+  //  nroProv: {
+  //    type: DataTypes.STRING,
+  //    allowNull: true,
+  //  },
+  //  lugarEntrega:{
+  //    type: DataTypes.STRING,
+  //    allowNull: true,
+  //  }
+  },{timestamps:false});
 };
