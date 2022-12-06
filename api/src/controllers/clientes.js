@@ -1,15 +1,30 @@
+const { DATE } = require("sequelize");
 const XLSX = require("xlsx");
 const {Cliente} = require("../db");
+const filename = "C:\\Users\\alex\\Documents\\Henry\\PreventistasApp\\PreventistasApp\\api\\Clientes.xlsx"
+
+const readOpts = { // <--- need these settings in readFile options
+    cellText:false, 
+    cellDates:true
+  };
+  const jsonOpts = {
+    header: 1,
+    defval: '',
+    blankrows: true,
+    raw: false,
+    dateNF: 'd"/"m"/"yyyy' // <--- need dateNF in sheet_to_json options (note the escape chars)
+  }
 
 
-const ExcelToJson = () => {
-    const excel = XLSX.readFile(
-     "C:\\Users\\alex\\Documents\\Henry\\PreventistasApp\\PreventistasApp\\api\\Clientes.xlsx"
-     );
+
+
+  const ExcelToJson = () => {
+    const excel = XLSX.readFile( filename , readOpts);
      var Excel = excel.SheetNames;
-     let datosFromJson = XLSX.utils.sheet_to_json(excel.Sheets[Excel[0]])
-    console.log(datosFromJson)
+    //  let datosFromJson = XLSX.utils.sheet_to_json(excel.Sheets[Excel[0]], jsonOpts)
+    let datosFromJson = XLSX.utils.sheet_to_json(excel.Sheets[Excel[0]])
      return datosFromJson
+
 }
 
 const clientes = ExcelToJson()
@@ -42,7 +57,7 @@ const PrecargaClientes = async () => {
                  abasto: e.Abasto===true? e.Abasto : false,
                  percIBTasa: e.PercIBTasa>0? e.PercIBTasa : e.PercIBTasa,
                  activo: e.Activo===true? e.Activo : false,
-                 fechaUC: e.FechaUC? e.FechaUC : "not found",
+                 fechaUC: e.FechaUC? e.FechaUC : new DATE,
                  fechaAlta: e.FechaAlta? e.FechaAlta : "not found",
                  leyF: e.LeyF ? e.LeyF : null,
                  leyR: e.LeyR ? e.LeyR : null,

@@ -106,7 +106,7 @@ module.exports = (sequelize) => {
              defaultValue: true,
            },
         fechaUC:{
-            type: DataTypes.STRING,
+            type: DataTypes.DATEONLY,
             allowNull: false,
           },
        LeyF: {
@@ -127,7 +127,7 @@ module.exports = (sequelize) => {
                      allowNull: true,
                     },
                     fechaAlta:{
-                      type: DataTypes.STRING,
+                      type: DataTypes.DATEONLY,
                       allowNull: true
                      },
                   observaciones: {
