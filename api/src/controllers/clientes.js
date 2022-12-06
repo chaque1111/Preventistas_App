@@ -1,15 +1,24 @@
+const { DATE } = require("sequelize");
 const XLSX = require("xlsx");
 const {Cliente} = require("../db");
-
+const filename = "D:\\Henry\\Marinaro\\Preventistas_App\\api\\Clientes.xlsx"
+const readOpts = { // <--- need these settings in readFile options
+    cellText:false, 
+    cellDates:true
+  };
+  const jsonOpts = {
+    header: 1,
+    defval: '',
+    blankrows: true,
+    raw: false,
+    dateNF: 'd"/"m"/"yyyy' // <--- need dateNF in sheet_to_json options (note the escape chars)
+  }
 
 const ExcelToJson = () => {
-    const excel = XLSX.readFile(
-     "C:\\Users\\alex\\Documents\\Henry\\PreventistasApp\\PreventistasApp\\api\\Clientes.xlsx"
-     );
-
+    const excel = XLSX.readFile( filename , readOpts);
      var Excel = excel.SheetNames;
-     let datosFromJson = XLSX.utils.sheet_to_json(excel.Sheets[Excel[0]])
-
+    //  let datosFromJson = XLSX.utils.sheet_to_json(excel.Sheets[Excel[0]], jsonOpts)
+    let datosFromJson = XLSX.utils.sheet_to_json(excel.Sheets[Excel[0]])
     console.log(datosFromJson)
      return datosFromJson
 
@@ -40,13 +49,13 @@ const PrecargaClientes = async () => {
                  observaciones: e.Oservaciones? e.Oservaciones : "not found",
                  contacto: e.Contacto? e.Contacto : "not found",
                  listaPrecios: e.ListaPrecios? e.ListaPrecios : "not found",
-                //  condVta: e.CondVta,
-                //  credito: e.Credito,
-                //  bonif: e.Bonif,
-                //  abasto: e.Abasto,
-                //  percIBTasa: e.PercIBTasa,
-                //  activo: e.Activo,
-                //  fechaUC: e.FechaUC,
+                 condVta: e.CondVta,
+                 credito: e.Credito,
+                 bonif: e.Bonif,
+                 abasto: e.Abasto,
+                 percIBTasa: e.PercIBTasa,
+                 activo: e.Activo,
+                 fechaUC: e.FechaUC ? e.FechaUC : new DATE,
                 //  leyF: e.LeyF ? e.LeyF : null,
                 //  leyR: e.LeyR ? e.LeyR : null,
                 //  actLista: e.ActLista? e.actLista : "not found",
@@ -54,7 +63,7 @@ const PrecargaClientes = async () => {
             }
         })
 
-         await Cliente.bulkCreate(arrayC)
+        await Cliente.bulkCreate(arrayC)
         
     } catch (e) {
         console.log(e)

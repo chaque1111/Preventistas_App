@@ -58,31 +58,31 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    categoria: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    nombreVendedor: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    saldo: {
-      type: DataTypes.DECIMAL(13,2),
-      allowNull: true,
-      defaultValue: null,
-    },
-    observaciones: {
-      type: DataTypes.STRING(2000),
-      allowNull: true
-    },
-    contacto: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    listaPrecios: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
+    // categoria: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    // },
+    // nombreVendedor: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    // },
+    // saldo: {
+    //   type: DataTypes.DECIMAL(13,2),
+    //   allowNull: true,
+    //   defaultValue: null,
+    // },
+    // observaciones: {
+    //   type: DataTypes.STRING(2000),
+    //   allowNull: true
+    // },
+    // contacto: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    // },
+    // listaPrecios: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: true,
+    // },
   //   condVta: {
   //   type: DataTypes.STRING,
   //   allowNull: true
@@ -117,10 +117,11 @@ module.exports = (sequelize) => {
   //    allowNull: false,
   //    defaultValue: true,
   //  },
-  //  fechaUC:{
-  //    type: DataTypes.STRING,
-  //    allowNull: false,
-  //  },
+    fechaUC:{
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+    
+    },
   //  actLista: {
   //    type: DataTypes.BOOLEAN,
   //    allowNull: false,
