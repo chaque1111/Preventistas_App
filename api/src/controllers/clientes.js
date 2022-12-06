@@ -1,7 +1,9 @@
 const { DATE } = require("sequelize");
 const XLSX = require("xlsx");
 const {Cliente} = require("../db");
-const filename = "D:\\Henry\\Marinaro\\Preventistas_App\\api\\Clientes.xlsx"
+
+const filename = "C:\\Users\\alex\\Documents\\Henry\\PreventistasApp\\PreventistasApp\\api\\Clientes.xlsx"
+
 const readOpts = { // <--- need these settings in readFile options
     cellText:false, 
     cellDates:true
@@ -14,12 +16,14 @@ const readOpts = { // <--- need these settings in readFile options
     dateNF: 'd"/"m"/"yyyy' // <--- need dateNF in sheet_to_json options (note the escape chars)
   }
 
-const ExcelToJson = () => {
+
+
+
+  const ExcelToJson = () => {
     const excel = XLSX.readFile( filename , readOpts);
      var Excel = excel.SheetNames;
     //  let datosFromJson = XLSX.utils.sheet_to_json(excel.Sheets[Excel[0]], jsonOpts)
     let datosFromJson = XLSX.utils.sheet_to_json(excel.Sheets[Excel[0]])
-    console.log(datosFromJson)
      return datosFromJson
 
 }
@@ -46,20 +50,22 @@ const PrecargaClientes = async () => {
                  categoria: e["Categoría"]? e["Categoría"]: "not found",
                  nombreVendedor: e.Vendedor,
                  saldo: e.Saldo,
-                 observaciones: e.Oservaciones? e.Oservaciones : "not found",
                  contacto: e.Contacto? e.Contacto : "not found",
                  listaPrecios: e.ListaPrecios? e.ListaPrecios : "not found",
-                 condVta: e.CondVta,
-                 credito: e.Credito,
-                 bonif: e.Bonif,
-                 abasto: e.Abasto,
-                 percIBTasa: e.PercIBTasa,
-                 activo: e.Activo,
-                 fechaUC: e.FechaUC ? e.FechaUC : new DATE,
-                //  leyF: e.LeyF ? e.LeyF : null,
-                //  leyR: e.LeyR ? e.LeyR : null,
-                //  actLista: e.ActLista? e.actLista : "not found",
-                //  email: e.email? e.email: null,
+                 condVta: e.CondVta? e.CondVta : "not found",
+                 bonif: e.Bonif ? e.Bonif: "not found",
+                 credito: e.Credito>=0  ? e.Credito: "not found",
+                 abasto: e.Abasto===true? e.Abasto : false,
+                 percIBTasa: e.PercIBTasa>0? e.PercIBTasa : e.PercIBTasa,
+                 activo: e.Activo===true? e.Activo : false,
+                 fechaUC: e.FechaUC? e.FechaUC : new DATE,
+                 fechaAlta: e.FechaAlta? e.FechaAlta : "not found",
+                 leyF: e.LeyF ? e.LeyF : null,
+                 leyR: e.LeyR ? e.LeyR : null,
+                 actLista: e.ActLista!==false ? e.actLista : false,
+                 email: e.email? e.email: "not found",
+                 observaciones: e.Oservaciones? e.Oservaciones : "not found",
+
             }
         })
 
