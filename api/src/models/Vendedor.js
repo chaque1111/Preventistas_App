@@ -22,7 +22,7 @@ module.exports = (sequelize) => {
       allowNull: false,
       defaultValue: 0
     },
-    vendComp: {
+    vendCom: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
@@ -44,7 +44,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    recibonrodDE: {
+    recibonroDde: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -52,5 +52,5 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false
     }
-  });
+  },{timestamps: false});
 };
