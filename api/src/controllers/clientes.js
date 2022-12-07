@@ -1,7 +1,7 @@
 const { DATE } = require("sequelize");
 const XLSX = require("xlsx");
 const {Cliente} = require("../db");
-const filename = "C:\\Users\\alex\\Documents\\Henry\\PreventistasApp\\PreventistasApp\\api\\Clientes.xlsx"
+const FILE_CLIENTES = "./Clientes.xlsx"
 
 const readOpts = { // <--- need these settings in readFile options
     cellText:false, 
@@ -19,7 +19,7 @@ const readOpts = { // <--- need these settings in readFile options
 
 
   const ExcelToJson = () => {
-    const excel = XLSX.readFile( filename , readOpts);
+    const excel = XLSX.readFile( FILE_CLIENTES , readOpts);
      var Excel = excel.SheetNames;
     //  let datosFromJson = XLSX.utils.sheet_to_json(excel.Sheets[Excel[0]], jsonOpts)
     let datosFromJson = XLSX.utils.sheet_to_json(excel.Sheets[Excel[0]])
@@ -73,8 +73,7 @@ const PrecargaClientes = async () => {
         console.log(e)
     }
 }
- PrecargaClientes()
-// ExcelToJson()
+
 
 module.exports = {
     ExcelToJson,

@@ -17,40 +17,40 @@ module.exports = (sequelize) => {
       allowNull: false,
       defaultValue: 0,
     },
-    limiteBonif: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0
-    },
-    vendComp: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-    },
-    vendImp: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-    },
-    vendTipoCom: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    observ: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    recibonroSUC: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    recibonrodDE: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    recibonroHTA: {
-      type: DataTypes.STRING,
-      allowNull: false
-    }
-  });
+    // limiteBonif: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    //   defaultValue: 0
+    // },
+    // vendComp: {
+    //   type: DataTypes.BOOLEAN,
+    //   allowNull: false,
+    //   defaultValue: false,
+    // },
+    // vendImp: {
+    //   type: DataTypes.BOOLEAN,
+    //   allowNull: false,
+    //   defaultValue: false,
+    // },
+    // vendTipoCom: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    // },
+    // observ: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false
+    // },
+    // recibonroSUC: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false
+    // },
+    // recibonrodDE: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false
+    // },
+    // recibonroHTA: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false
+    // }
+  },{timestamps: false});
 };
