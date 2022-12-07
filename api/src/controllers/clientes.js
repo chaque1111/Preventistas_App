@@ -1,6 +1,8 @@
-const { DATE } = require("sequelize");
+const { DATE, where } = require("sequelize");
 const XLSX = require("xlsx");
-const {Cliente} = require("../db");
+const {Cliente,Vendedor} = require("../db");
+const { PrecargaVendedores } = require("./vendedores");
+
 const FILE_CLIENTES = "./Clientes.xlsx"
 
 const readOpts = { // <--- need these settings in readFile options
@@ -27,12 +29,14 @@ const readOpts = { // <--- need these settings in readFile options
 
 }
 
-const clientes = ExcelToJson()
+const clientes = ExcelToJson();
+
+
 
 const PrecargaClientes = async () => {
     try {
-        const arrayC = clientes.map(e => {
-      
+        PrecargaVendedores()
+        const arrayC = clientes.map( e => {
             return {
                  id: e.Codigo,
                  name: e.NomFant? e.NomFant : "not found",
@@ -64,19 +68,48 @@ const PrecargaClientes = async () => {
                  actLista: e.ActLista!==false ? e.actLista : false,
                  email: e.email? e.email: "not found",
                  observaciones: e.Oservaciones? e.Oservaciones : "not found",
-
             }
         })
 
         await Cliente.bulkCreate(arrayC)
+        let arreglo = await Cliente.findAll();
+
+        for(let i=0; i<=arreglo.length; i++){
+            let cliente = await Cliente.findOne({where:{ id: arreglo[i].id}});
+            let vendedor = await Vendedor.findOne({where:{ name: arreglo[i].nombreVendedor}});
+            // await Cliente.update({vendedorId: vendedor.id},
+            //     {
+            //         where:{id : cliente.id }
+            //     })
+            cliente.vendedorId = vendedor.id;
+            await cliente.save()
+           
+        }
         
+
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+const getAllInfo = async () => {
+    try {
+         const clientesFromDb = await Cliente.findAll();
+         console.log(clientesFromDb)
     } catch (e) {
         console.log(e)
     }
 }
 
 
+
+
+
+
+
+
 module.exports = {
     ExcelToJson,
-    PrecargaClientes
+    PrecargaClientes,
+    getAllInfo
 }
