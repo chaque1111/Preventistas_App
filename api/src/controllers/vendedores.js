@@ -23,7 +23,7 @@ const readOpts = { // <--- need these settings in readFile options
      var Excel = excel.SheetNames;
     //  let datosFromJson = XLSX.utils.sheet_to_json(excel.Sheets[Excel[0]], jsonOpts)
     let datosFromJson = XLSX.utils.sheet_to_json(excel.Sheets[Excel[0]])
-      console.log(datosFromJson)
+      
      return datosFromJson
 }
 
@@ -35,6 +35,14 @@ const PrecargaVendedores = async () => {
      id: e.Código,
      name: e.Vendedores,
      comision: e.comision,
+     limiteBonif: e.LimiteBonif >= 0 ? e.limiteBonif : 0,
+     vendCom: e.VendCom === true ? true : false ,
+     vendImp: e.VendImp === true ? true : false, 
+     vendTipoCom: e.VendTipoCom ? e.VendTipoCom : 0,
+     observ: e.Observ ? e.Observ : "not found",
+     recibonroSUC: e.ReciboNroSuc ? e.ReciboNroSuc : "not found",
+     recibonroDde: e.ReciboNroDde ? e.ReciboNroDde : "not found",
+     recibonroHTA: e.ReciboNroHta ? e.ReciboNroHta : "not found"
    }
  })
 

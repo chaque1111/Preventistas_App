@@ -1,7 +1,6 @@
 const { DATE } = require("sequelize");
 const XLSX = require("xlsx");
 const {Cliente} = require("../db");
-
 const FILE_CLIENTES = "./Clientes.xlsx"
 
 const readOpts = { // <--- need these settings in readFile options
