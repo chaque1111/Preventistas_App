@@ -1,14 +1,17 @@
 const { Router } = require('express');
-const { ExcelToJson } = require('../controllers/clientes');
 // Importar todos los routers;
+const router = Router();
+const clienteMain = require("./clientes")
+const vendedorMain = require("./vendedores")
 // Ejemplo: const authRouter = require('./auth.js');
 
 
-const router = Router();
+
 
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 
-
+router.use('/clientes', clienteMain);
+router.use("/vendedores", vendedorMain);
 module.exports = router;
