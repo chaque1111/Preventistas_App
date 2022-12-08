@@ -45,6 +45,7 @@ const PrecargaVendedores = async () => {
      recibonroHTA: e.ReciboNroHta ? e.ReciboNroHta : "not found"
    }
  })
+ 
 
  await Vendedor.bulkCreate(vendedores)
 }
