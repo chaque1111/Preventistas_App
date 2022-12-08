@@ -1,5 +1,5 @@
 const XLSX = require("xlsx");
-const {Vendedor} = require("../db");
+const {Vendedor,Cliente} = require("../db");
 const filename = "./Vendedores.xlsx"
 
 
@@ -50,7 +50,35 @@ const PrecargaVendedores = async () => {
  await Vendedor.bulkCreate(vendedores)
 }
 
+const getAllVendedores = async (req,res) => {
+  try {
+       const vendedores = await Vendedor.findAll({include: Cliente});
+       res.status(200).json(vendedores)
+  } catch (error) {
+    res.status(400).send(error)
+  }
+}
+
+
+const getVendedorById = async (req,res) => {
+  try {
+      const found = await Vendedor.findByPk(req.params.id, {include: Cliente});
+      console.log(found)
+      if(!found){
+        return res.status(404).send("el vendedor no existe")
+      }
+    return res.status(200).json(found)
+  } catch (error) {
+    res.status(400).send(error)
+  }
+
+}
+
+
+
 
 module.exports = {
-  PrecargaVendedores
+  PrecargaVendedores,
+  getAllVendedores,
+  getVendedorById
 }

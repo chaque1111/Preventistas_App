@@ -74,7 +74,7 @@ const PrecargaClientes = async () => {
         await Cliente.bulkCreate(arrayC)
         let arreglo = await Cliente.findAll();
 
-        for(let i=0; i<=arreglo.length; i++){
+        for(let i=0; i<arreglo.length; i++){
             let cliente = await Cliente.findOne({where:{ id: arreglo[i].id}});
             let vendedor = await Vendedor.findOne({where:{ name: arreglo[i].nombreVendedor}});
             // await Cliente.update({vendedorId: vendedor.id},
@@ -83,33 +83,25 @@ const PrecargaClientes = async () => {
             //     })
             cliente.vendedorId = vendedor.id;
             await cliente.save()
-           
         }
-        
-
     } catch (e) {
         console.log(e)
     }
 }
 
-const getAllInfo = async () => {
-    try {
-         const clientesFromDb = await Cliente.findAll();
-         console.log(clientesFromDb)
-    } catch (e) {
-        console.log(e)
-    }
+const getAllClients = async (req,res) => {
+try {
+    const clientes = await Cliente.findAll({include: Vendedor});
+    res.status(200).json(clientes)
+} catch (e) {
+    res.status(400).send(e)
 }
-
-
-
-
-
+}
 
 
 
 module.exports = {
     ExcelToJson,
     PrecargaClientes,
-    getAllInfo
+    getAllClients
 }
