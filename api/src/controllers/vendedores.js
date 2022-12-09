@@ -48,8 +48,19 @@ const PrecargaVendedores = async () => {
 
 const getAllVendedores = async (req, res) => {
   try {
-    const vendedores = await Vendedor.findAll({include: Cliente});
-    res.status(200).json(vendedores);
+    const {name} = req.query;
+    if (name) {
+      const vendedores = await Vendedor.findAll();
+      const vendedorByName = vendedores.filter((e) =>
+        e.name.toUpperCase().includes(name.toUpperCase())
+      );
+      vendedorByName.length
+        ? res.status(200).json(vendedorByName)
+        : res.status(300).json("vendedor no encontrado");
+    } else {
+      const vendedores = await Vendedor.findAll({include: Cliente});
+      res.status(200).json(vendedores);
+    }
   } catch (error) {
     res.status(400).send(error);
   }

@@ -81,7 +81,6 @@ const PrecargaClientes = async () => {
       //         where:{id : cliente.id }
       //     })
       cliente.vendedorId = vendedor.id;
-
       await cliente.save();
     }
   } catch (e) {
@@ -94,7 +93,7 @@ const getAllClients = async (req, res) => {
     const {name} = req.query;
     if (name) {
       const {name} = req.query;
-      const clientes = await Cliente.findAll();
+      const clientes = await Cliente.findAll({include: Vendedor});
       const clientesFilter = clientes.filter((e) =>
         e.name.toUpperCase().includes(name.toUpperCase())
       );
