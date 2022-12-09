@@ -1,13 +1,9 @@
 const {Router} = require("express");
-const {getAllClients} = require("../controllers/clientes")
-
+const {getAllClients, getClientById} = require("../controllers/clientes");
 
 const router = Router();
 
-router.get("/", getAllClients );
+router.get("/", getAllClients);
+router.get("/:id", getClientById);
 
-
-
-
-
-module.exports = router
+module.exports = router;
