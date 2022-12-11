@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styles from "../Clients/Clients.module.css";
-
+import Card from "../Card/Card.jsx";
 
 import{
     getAllClients
@@ -22,10 +22,10 @@ export default function Clients() {
             clients.map((e) => {
               return (
                 <div key={e.id} >
-                  {/* <Link to={"/detail/" + e.id}>
-                    <Card name={e.name} flag={e.flag} continent={e.continent} />
-                  </Link> */}
-                  <h5>{e.name}</h5>
+                  {/* <Link to={"/detail/" + e.id}> */}
+                    <Card name={e.name} localidad={e.localidad} vendedor={e.nombreVendedor} zona={e.zona}/>
+                  {/* </Link> */}
+                  {/* <h5>{e.name}</h5> */}
                 </div>
               );
             })
