@@ -1,0 +1,60 @@
+nav{
+ 
+    background-color: #86ccf4;
+    display: flex;
+    position: fixed; 
+    width: 100vw;
+    height: 55px;
+    z-index: 99;
+    margin: 0;   
+    top: 0;
+    justify-content: center;
+    
+  }
+  
+  
+  .contain{
+    align-items: center;
+    display:flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width:800px;
+  }
+  
+  .btnClient{
+    border:none;
+    background-color: #86ccf4;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px; 
+  }
+  
+  .reload{
+    border:none;
+    background-color: #F8C471;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 18px;
+    left:32em;
+    position: absolute;
+    top:0.3em;
+  }
+  
+  .select{  
+    position: absolute;
+    padding-top:0.7em;
+    left:26.3em;
+    top:27%
+  }
+  
+  .order{
+    background-color: #F8C471;
+    height: 2.0em;
+  }
+  
+  .continent{
+    background-color: #F8C471;
+    height: 2.0em;
+  }
+  .client{
+    background-color: #F8C471;
+    height: 2.0em;
+  }
