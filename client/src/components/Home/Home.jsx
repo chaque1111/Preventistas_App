@@ -7,7 +7,10 @@ export default function Home() {
     return(
         <div className={styles.container}>
             <div className={styles.cardsCont}>
-           <h1>HOME</h1>
+           {/* <h1>HOME</h1> */}
+           <Link to="/transactions">
+            <button >Realizar transacción</button>
+          </Link>
            </div>
         </div>
     )
