@@ -91,16 +91,23 @@ const PrecargaClientes = async () => {
 const getAllClients = async (req, res) => {
   try {
     const {name} = req.query;
+    const clientes = await Cliente.findAll({include: Vendedor});
+    const clientesMap = clientes.map((e) => {
+      return {
+        id_client: e.id,
+        name_client: e.name,
+        name_seller: e.nombreVendedor,
+        sellerId: e.vendedorId,
+      };
+    });
     if (name) {
       const {name} = req.query;
-      const clientes = await Cliente.findAll({include: Vendedor});
-      const clientesFilter = clientes.filter((e) =>
+      const clientesFilter = clientesMap.filter((e) =>
         e.name.toUpperCase().includes(name.toUpperCase())
       );
       return res.status(200).send(clientesFilter);
     } else {
-      const clientes = await Cliente.findAll({include: Vendedor});
-      res.status(200).json(clientes);
+      res.status(200).json(clientesMap);
     }
   } catch (e) {
     res.status(400).send(e);
