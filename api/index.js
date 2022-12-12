@@ -18,12 +18,15 @@
 //                       `=---='
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require("./src/app.js");
-const {PrecargaClientes, getAllInfo} = require("./src/controllers/clientes.js");
+const {PrecargaClientes} = require("./src/controllers/clientes.js");
+const {PrecargaInventario} = require("./src/controllers/inventario.js");
+
 const {conn} = require("./src/db.js");
 const port = process.env.PORT || 3001;
 // Syncing all the models at once.
 conn.sync({force: true}).then(() => {
   server.listen(port, () => {
+    PrecargaInventario();
     PrecargaClientes();
     console.log(`%s listening at ${port}`); // eslint-disable-line no-console
   });

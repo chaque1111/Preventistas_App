@@ -19,9 +19,13 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      direccion: {
+      latitud: {
         type: DataTypes.STRING,
-        allowNull: false,
+        defaultValue: "0",
+      },
+      longitud: {
+        type: DataTypes.STRING,
+        defaultValue: "0",
       },
       localidad: {
         type: DataTypes.STRING,
@@ -43,7 +47,7 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      deudas: {
+      saldo: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: false,
@@ -68,38 +72,12 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      saldo: {
-        type: DataTypes.DECIMAL(13, 2),
-        allowNull: true,
-        defaultValue: null,
-      },
-
       contacto: {
         type: DataTypes.STRING,
         allowNull: false,
       },
       listaPrecios: {
         type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      condVta: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      credito: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      bonif: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      abasto: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-      },
-      percIBTasa: {
-        type: DataTypes.DECIMAL(4, 2),
         allowNull: true,
       },
       activo: {
@@ -110,19 +88,6 @@ module.exports = (sequelize) => {
       fechaUC: {
         type: DataTypes.DATEONLY,
         allowNull: false,
-      },
-      LeyF: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      LeyR: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      actLista: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: true,
       },
       email: {
         type: DataTypes.STRING,
@@ -136,34 +101,6 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING(1200),
         allowNull: true,
       },
-      //  web: {
-      //   type: DataTypes.STRING,
-      //   allowNull: true,
-      // },
-      // llamar: {
-      //   type: DataTypes.STRING,
-      //   allowNull: true,
-      // },
-      // pasar: {
-      //   type: DataTypes.STRING,
-      //   allowNull: true,
-      // },
-      // observCobranza:{
-      //   type: DataTypes.STRING,
-      //   allowNull: true,
-      // },
-      //  fechaRepos: {
-      //    type: DataTypes.STRING,
-      //    allowNull: true,
-      //  },
-      //  nroProv: {
-      //    type: DataTypes.STRING,
-      //    allowNull: true,
-      //  },
-      //  lugarEntrega:{
-      //    type: DataTypes.STRING,
-      //    allowNull: true,
-      //  }
     },
     {timestamps: false}
   );
