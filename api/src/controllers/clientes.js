@@ -49,20 +49,12 @@ const PrecargaClientes = async () => {
         condicionIva: e["Condición Frente al IVA"],
         categoria: e["Categoría"] ? e["Categoría"] : "not found",
         nombreVendedor: e.Vendedor,
-        saldo: e.Saldo,
+        // saldo: e.Saldo,
         contacto: e.Contacto ? e.Contacto : "not found",
         listaPrecios: e.ListaPrecios ? e.ListaPrecios : "not found",
-        condVta: e.CondVta ? e.CondVta : "not found",
-        bonif: e.Bonif ? e.Bonif : "not found",
-        credito: e.Credito >= 0 ? e.Credito : "not found",
-        abasto: e.Abasto === true ? e.Abasto : false,
-        percIBTasa: e.PercIBTasa > 0 ? e.PercIBTasa : e.PercIBTasa,
         activo: e.Activo === true ? e.Activo : false,
         fechaUC: e.FechaUC ? e.FechaUC : new DATE(),
         fechaAlta: e.FechaAlta ? e.FechaAlta : "not found",
-        leyF: e.LeyF ? e.LeyF : null,
-        leyR: e.LeyR ? e.LeyR : null,
-        actLista: e.ActLista !== false ? e.actLista : false,
         email: e.email ? e.email : "not found",
         observaciones: e.Oservaciones ? e.Oservaciones : "not found",
       };
@@ -91,16 +83,23 @@ const PrecargaClientes = async () => {
 const getAllClients = async (req, res) => {
   try {
     const {name} = req.query;
+    const clientes = await Cliente.findAll({include: Vendedor});
+    const clientesMap = clientes.map((e) => {
+      return {
+        id_client: e.id,
+        name_client: e.name,
+        name_seller: e.nombreVendedor,
+        sellerId: e.vendedorId,
+      };
+    });
     if (name) {
       const {name} = req.query;
-      const clientes = await Cliente.findAll({include: Vendedor});
-      const clientesFilter = clientes.filter((e) =>
+      const clientesFilter = clientesMap.filter((e) =>
         e.name.toUpperCase().includes(name.toUpperCase())
       );
       return res.status(200).send(clientesFilter);
     } else {
-      const clientes = await Cliente.findAll({include: Vendedor});
-      res.status(200).json(clientes);
+      res.status(200).json(clientesMap);
     }
   } catch (e) {
     res.status(400).send(e);
