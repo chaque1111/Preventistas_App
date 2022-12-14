@@ -36,8 +36,8 @@ const PrecargaClientes = async () => {
         id: e.Codigo,
         name: e.NomFant ? e.NomFant : "not found",
         rzsocial: e.RzSocial ? e.RzSocial : "not found",
-        direccion: e["Dirección"],
         localidad: e.Localidad,
+        direccion: e["Dirección"] ? e["Dirección"] : null,
         provincia: e.Provincia,
         pais: e.País,
         zona: e["CódigoPostal"] ? e["CódigoPostal"] : "not found",
@@ -86,10 +86,16 @@ const getAllClients = async (req, res) => {
     const clientes = await Cliente.findAll({include: Vendedor});
     const clientesMap = clientes.map((e) => {
       return {
-        id_client: e.id,
-        name_client: e.name,
-        name_seller: e.nombreVendedor,
-        sellerId: e.vendedorId,
+        cliente: {
+          id_client: e.id,
+          name_client: e.name,
+          direccion: e.direccion,
+          localidad: e.localidad,
+        },
+        vendedor: {
+          name_seller: e.nombreVendedor,
+          sellerId: e.vendedorId,
+        },
       };
     });
     if (name) {
