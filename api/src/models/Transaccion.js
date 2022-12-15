@@ -6,12 +6,6 @@ module.exports = (sequelize) => {
   sequelize.define(
     "transaccion",
     {
-      id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false,
-        primaryKey: true,
-      },
       vendedorId: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -51,6 +45,10 @@ module.exports = (sequelize) => {
       activa: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
+      },
+      orderNumber: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
     },
     {timestamps: false}

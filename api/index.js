@@ -20,6 +20,7 @@
 const server = require("./src/app.js");
 const {PrecargaClientes} = require("./src/controllers/clientes.js");
 const {PrecargaInventario} = require("./src/controllers/inventario.js");
+const {createVariable} = require("./src/controllers/transaccion.js");
 
 const {conn} = require("./src/db.js");
 const port = process.env.PORT || 3001;
@@ -28,6 +29,7 @@ conn.sync({force: true}).then(() => {
   server.listen(port, () => {
     PrecargaInventario();
     PrecargaClientes();
+    createVariable();
     console.log(`%s listening at ${port}`); // eslint-disable-line no-console
   });
 });
