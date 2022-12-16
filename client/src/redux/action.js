@@ -10,6 +10,20 @@ export function getAllSellers() {
   };
 }
 
+export function getSellersId(id) {
+  return async (dispatch) => {
+    const res = await axios("/vendedores/" + id);
+    return dispatch({ type: "GET_SELLERS_ID", payload: res.data });
+  };
+}
+
+export function getFilterSellers(payload) {
+  return {
+    type: "FILTER_BY_SELLERS",
+    payload,
+  };
+}
+
 export function getAllClients() {
   return async (dispatch) => {
     const res = await axios("/clientes");

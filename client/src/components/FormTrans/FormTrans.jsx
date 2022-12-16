@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Styles from "../FormTrans/FormTrans.module.css"
-import { getAllSellers, getAllClients, getAllProducts } from "../../redux/action";
+import { getAllSellers, getAllClients, getAllProducts, getSellersId, getFilterSellers } from "../../redux/action";
 import getDate from "../../utils/functions/getDate";
 
   
@@ -10,6 +10,7 @@ import getDate from "../../utils/functions/getDate";
     const dispatch = useDispatch();
     
     const [input, setInput] = useState({
+      name_seller: "",
       name_client: "",
       date: "",
       products: [],
@@ -19,7 +20,17 @@ import getDate from "../../utils/functions/getDate";
     })
     
     const date = getDate()
-    console.log(date)
+   
+
+    function handleSelectSellers(e){
+      
+      console.log(e.target.value)
+      dispatch(getSellersId(e.target.value))
+      setInput({
+        ...input,
+        name_seller: e.target.value
+      })
+    }
     
     function handleSelectClients(e){
       setInput({
@@ -40,7 +51,7 @@ import getDate from "../../utils/functions/getDate";
     function handleAddProd(e) {
       e.preventDefault();
      if(input.nameProduct){
-      console.log("hi")
+    
      
       setInput({
         ...input,
@@ -56,7 +67,7 @@ import getDate from "../../utils/functions/getDate";
     function handleSubProd(e){
       e.preventDefault();
       if(input.nameProduct && input.cant>1){
-      console.log(e)
+      
       input.products.splice(input.products.length-1,1);
       setInput({
         ...input,
@@ -101,12 +112,14 @@ import getDate from "../../utils/functions/getDate";
     }, [dispatch]);
 
     const products = useSelector((state) => state.allProducts);
-    const clients = useSelector((state) => state.allClients);
+    
     const sellers = useSelector((state) => state.allSellers);
-
-    input.products.map((el)=>(console.log(el)))
-   
-    console.log(input)
+    
+    const clients = useSelector((state) => state.selectClients);
+    clients.clientes.map((e)=>(console.log(e)))
+    // console.log(clients.clientes)
+    // sellers.map((e)=>(console.log(e.vendedor)))
+    
     return(
         <div className={Styles.containMaster}>
       <div className={Styles.contain}>
@@ -118,12 +131,12 @@ import getDate from "../../utils/functions/getDate";
             </div>
             <div className={Styles.divName}>
               <label>Nombre Vendedor:</label>
-             <select defaultValue={"default"} onChange={(e) => handleSelectClients(e)}>
+             <select defaultValue={"default"} onChange={(e) => handleSelectSellers(e)}>
              <option value={"default"} disable>
                   Seleccionar Vendedor
                 </option>
                 {sellers.map((el) => (
-                  <option value={el.vendedor.name} key={el.vendedor.name}>
+                  <option value={el.vendedor.id} key={el.vendedor.name}>
                     {el.vendedor.name}
                   </option>
                 ))}
@@ -135,11 +148,11 @@ import getDate from "../../utils/functions/getDate";
              <option value={"default"} disable>
                   Seleccionar cliente
                 </option>
-                {clients.map((el) => (
-                  <option value={el.name_client} key={el.id_client}>
-                    {el.name_client}
+                {clients.clientes.map((el) => (
+                  <option value={el.name} key={el.id} >
+                    {el.name}
                   </option>
-                ))}
+               ))}
              </select>
               </div>
             <div>
