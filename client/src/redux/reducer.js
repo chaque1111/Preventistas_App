@@ -1,5 +1,6 @@
 const initialState = {
   allClients: [],
+  allProducts: [],
 };
 
 function reducer(state = initialState, { type, payload }) {
@@ -8,6 +9,12 @@ function reducer(state = initialState, { type, payload }) {
       return {
         ...state,
         allClients: payload,
+      };
+
+    case "GET_PRODUCTS":
+      return {
+        ...state,
+        allProducts: payload,
       };
     default:
       return state;
