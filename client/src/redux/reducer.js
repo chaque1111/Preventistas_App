@@ -1,10 +1,17 @@
 const initialState = {
   allClients: [],
   allProducts: [],
+  allSellers: [],
 };
 
 function reducer(state = initialState, { type, payload }) {
   switch (type) {
+    case "GET_SELLERS":
+      return {
+        ...state,
+        allSellers: payload,
+      };
+
     case "GET_CLIENTS":
       return {
         ...state,
