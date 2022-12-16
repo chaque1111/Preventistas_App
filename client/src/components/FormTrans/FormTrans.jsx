@@ -116,7 +116,7 @@ import getDate from "../../utils/functions/getDate";
     const sellers = useSelector((state) => state.allSellers);
     
     const clients = useSelector((state) => state.selectClients);
-    clients.clientes.map((e)=>(console.log(e)))
+    // clients.clientes.map((e)=>(console.log(e)))
     // console.log(clients.clientes)
     // sellers.map((e)=>(console.log(e.vendedor)))
     
@@ -148,7 +148,7 @@ import getDate from "../../utils/functions/getDate";
              <option value={"default"} disable>
                   Seleccionar cliente
                 </option>
-                {clients.clientes.map((el) => (
+                {clients.clientes && clients.clientes.map((el) => (
                   <option value={el.name} key={el.id} >
                     {el.name}
                   </option>

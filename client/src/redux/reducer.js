@@ -1,6 +1,6 @@
 const initialState = {
   allClients: [],
-  selectClients: { id: 1, clientes: [{ id: 1 }] },
+  selectClients: {},
   allProducts: [],
   allSellers: [],
 };
