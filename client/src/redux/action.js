@@ -37,3 +37,10 @@ export function getAllProducts() {
     return dispatch({ type: "GET_PRODUCTS", payload: res.data });
   };
 }
+
+export function getProductId(id) {
+  return async (dispatch) => {
+    const res = await axios("/inventario/" + id);
+    return dispatch({ type: "GET_PRODUCT_ID", payload: res.data });
+  };
+}

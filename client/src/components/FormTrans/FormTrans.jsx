@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Styles from "../FormTrans/FormTrans.module.css"
-import { getAllSellers, getAllClients, getAllProducts, getSellersId, getFilterSellers } from "../../redux/action";
+import { getAllSellers, getAllClients, getAllProducts, getSellersId, getFilterSellers, getProductId } from "../../redux/action";
 import getDate from "../../utils/functions/getDate";
 
   
@@ -10,13 +10,14 @@ import getDate from "../../utils/functions/getDate";
     const dispatch = useDispatch();
     
     const [input, setInput] = useState({
-      name_seller: "",
+      sellerId: "",
       name_client: "",
       date: "",
       products: [],
       cant: 1,
-      nameProduct: "",
-      cantTotal: ""
+      descripcion: "",
+      inventarioId: ""
+      
     })
     
     const date = getDate()
@@ -24,11 +25,10 @@ import getDate from "../../utils/functions/getDate";
 
     function handleSelectSellers(e){
       
-      console.log(e.target.value)
       dispatch(getSellersId(e.target.value))
       setInput({
         ...input,
-        name_seller: e.target.value
+        sellerId: e.target.value
       })
     }
     
@@ -50,13 +50,13 @@ import getDate from "../../utils/functions/getDate";
     
     function handleAddProd(e) {
       e.preventDefault();
-     if(input.nameProduct){
+     if(input.descripcion){
     
      
       setInput({
         ...input,
         cant: input.cant + 1,
-        products: [...input.products, input.nameProduct]  
+        products: [...input.products, input.descripcion]  
       
       });
 
@@ -66,7 +66,7 @@ import getDate from "../../utils/functions/getDate";
 
     function handleSubProd(e){
       e.preventDefault();
-      if(input.nameProduct && input.cant>1){
+      if(input.descripcion && input.cant>1){
       
       input.products.splice(input.products.length-1,1);
       setInput({
@@ -76,30 +76,38 @@ import getDate from "../../utils/functions/getDate";
       });
     }
     }
-
-    function handleSelectProducts(e){
+    
+    async function handleSelectProducts(e){
       
       if (
         !input.products.includes(e.target.value) &&
         e.target.value !== "Seleccionar producto"
-      ) {        
-        input.products.splice(0,input.products.length);
-        setInput({
+        ) {        
+          input.products.splice(0,input.products.length);
+          setInput({
+            ...input,
+            cant: 1,
+            products: input.products,
+            descripcion: "",
+          })
+          console.log([e.target])
+          
+          console.log(e.target.value)
+          const idProduct = await dispatch(getProductId(e.target.value))
+          
+          console.log(idProduct.payload.descripcion)
+          setInput({
           ...input,
           cant: 1,
-          products: input.products,
-          nameProduct: "",
-        })
-        setInput({
-          ...input,
-          cant: 1,
-          products: [...input.products,  e.target.value],
-          nameProduct: e.target.value
+          products: [...input.products,  idProduct.payload.descripcion],
+          descripcion: idProduct.payload.descripcion,
+          inventarioId: e.target.value
+
         });
         
       
       } else {
-        e.target.value = input.nameProduct;
+        e.target.value = input.descripcion;
         return alert(
           "Ya has añadido este producto a la lista. Seleccione otro producto o continúe completando el formulario."
         );
@@ -112,14 +120,17 @@ import getDate from "../../utils/functions/getDate";
     }, [dispatch]);
 
     const products = useSelector((state) => state.allProducts);
+
+    const productId = useSelector((state) => state.productId);
+    
     
     const sellers = useSelector((state) => state.allSellers);
     
     const clients = useSelector((state) => state.selectClients);
     // clients.clientes.map((e)=>(console.log(e)))
-    // console.log(clients.clientes)
-    // sellers.map((e)=>(console.log(e.vendedor)))
     
+    // sellers.map((e)=>(console.log(e.vendedor)))
+    console.log(input)
     return(
         <div className={Styles.containMaster}>
       <div className={Styles.contain}>
@@ -132,7 +143,7 @@ import getDate from "../../utils/functions/getDate";
             <div className={Styles.divName}>
               <label>Nombre Vendedor:</label>
              <select defaultValue={"default"} onChange={(e) => handleSelectSellers(e)}>
-             <option value={"default"} disable>
+             <option name={"default"} value={"default"} disable>
                   Seleccionar Vendedor
                 </option>
                 {sellers.map((el) => (
@@ -166,7 +177,7 @@ import getDate from "../../utils/functions/getDate";
                   Seleccionar producto
                 </option>
                 {products.map((el) => (
-                  <option value={el.descripcion} key={el.descripcion}>
+                  <option  value={el.id} key={el.descripcion}>
                     {el.descripcion}
                   </option>
                 ))}

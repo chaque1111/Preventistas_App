@@ -3,6 +3,7 @@ const initialState = {
   selectClients: {},
   allProducts: [],
   allSellers: [],
+  productId: {},
 };
 
 function reducer(state = initialState, { type, payload }) {
@@ -42,6 +43,12 @@ function reducer(state = initialState, { type, payload }) {
       return {
         ...state,
         allProducts: payload,
+      };
+
+    case "GET_PRODUCT_ID":
+      return {
+        ...state,
+        productId: payload,
       };
 
     default:
