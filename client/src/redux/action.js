@@ -6,14 +6,14 @@ axios.defaults.baseURL = localhost;
 export function getAllSellers() {
   return async (dispatch) => {
     const res = await axios("/vendedores");
-    return dispatch({ type: "GET_SELLERS", payload: res.data });
+    return dispatch({type: "GET_SELLERS", payload: res.data});
   };
 }
 
 export function getSellersId(id) {
   return async (dispatch) => {
     const res = await axios("/vendedores/" + id);
-    return dispatch({ type: "GET_SELLERS_ID", payload: res.data });
+    return dispatch({type: "GET_SELLERS_ID", payload: res.data});
   };
 }
 
@@ -27,13 +27,27 @@ export function getFilterSellers(payload) {
 export function getAllClients() {
   return async (dispatch) => {
     const res = await axios("/clientes");
-    return dispatch({ type: "GET_CLIENTS", payload: res.data });
+    return dispatch({type: "GET_CLIENTS", payload: res.data});
   };
 }
 
 export function getAllProducts() {
   return async (dispatch) => {
     const res = await axios("/inventario");
-    return dispatch({ type: "GET_PRODUCTS", payload: res.data });
+    return dispatch({type: "GET_PRODUCTS", payload: res.data});
+  };
+}
+
+export function logIng(seller) {
+  console.log(seller);
+  return async (dispatch) => {
+    const res = await axios.put("/vendedores/log", seller);
+    return dispatch({type: "LOG_ING", payload: res.data});
+  };
+}
+
+export function refresh() {
+  return async (dispatch) => {
+    return dispatch({type: "REFRESH"});
   };
 }

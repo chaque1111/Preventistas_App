@@ -3,9 +3,10 @@ const initialState = {
   selectClients: {},
   allProducts: [],
   allSellers: [],
+  user: [],
 };
 
-function reducer(state = initialState, { type, payload }) {
+function reducer(state = initialState, {type, payload}) {
   switch (type) {
     case "GET_SELLERS":
       return {
@@ -42,6 +43,18 @@ function reducer(state = initialState, { type, payload }) {
       return {
         ...state,
         allProducts: payload,
+      };
+
+    case "LOG_ING":
+      return {
+        ...state,
+        user: payload,
+      };
+
+    case "REFRESH":
+      return {
+        ...state,
+        user: [],
       };
 
     default:
