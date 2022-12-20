@@ -4,6 +4,7 @@ const initialState = {
   allProducts: [],
   allSellers: [],
   productId: {},
+  orderNumber: "",
 };
 
 function reducer(state = initialState, { type, payload }) {
@@ -49,6 +50,12 @@ function reducer(state = initialState, { type, payload }) {
       return {
         ...state,
         productId: payload,
+      };
+
+    case "GET_ORDER_NUMBER":
+      return {
+        ...state,
+        orderNumber: payload,
       };
 
     default:

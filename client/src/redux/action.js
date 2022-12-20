@@ -44,3 +44,34 @@ export function getProductId(id) {
     return dispatch({ type: "GET_PRODUCT_ID", payload: res.data });
   };
 }
+
+export function getOrderNumber() {
+  return async (dispatch) => {
+    const res = await axios("/transacciones/pedido");
+    return dispatch({ type: "GET_ORDER_NUMBER", payload: res.data });
+  };
+}
+
+export function changeOrderNumber(id) {
+  const modify = id + 1;
+  console.log(modify);
+  return async (dispatch) => {
+    const res = await axios.put("/transacciones/pedido/" + modify);
+    return res.json;
+  };
+}
+
+export function postTransac(payload) {
+  console.log(payload);
+  return async function (dispatch) {
+    try {
+      const res = await axios.post("/transacciones/", payload);
+
+      return res;
+    } catch (error) {
+      if (error.response) {
+        return alert(error.response.data);
+      }
+    }
+  };
+}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Styles from "../FormTrans/FormTrans.module.css"
-import { getAllSellers, getAllClients, getAllProducts, getSellersId, getFilterSellers, getProductId } from "../../redux/action";
+import { getAllSellers, getAllClients, getAllProducts, getSellersId, getFilterSellers, getProductId, getOrderNumber, changeOrderNumber, postTransac } from "../../redux/action";
 import getDate from "../../utils/functions/getDate";
 
   
@@ -10,17 +10,32 @@ import getDate from "../../utils/functions/getDate";
     const dispatch = useDispatch();
     
     const [input, setInput] = useState({
-      sellerId: "",
-      name_client: "",
-      date: "",
+      vendedorId: "",
+      clienteId: "",
+      fecha: "",
       products: [],
-      cant: 1,
+      cantidad: 1,
+      costo: "",
+      subTotal: "",
       descripcion: "",
-      inventarioId: ""
+      inventarioId: "",
+      orderNumber: ""
+
+
+      // vendedorId,
+      // clienteId,
+      // inventarioId,
+      // descripcion,
+      // costo,
+      // cantidad,
+      // subTotal,
+      // fecha,
+      // observacion,
+      // orderNumber,
       
     })
     
-    const date = getDate()
+    const fecha = getDate()
    
 
     function handleSelectSellers(e){
@@ -28,54 +43,81 @@ import getDate from "../../utils/functions/getDate";
       dispatch(getSellersId(e.target.value))
       setInput({
         ...input,
-        sellerId: e.target.value
+        vendedorId: e.target.value
       })
     }
     
     function handleSelectClients(e){
       setInput({
         ...input,
-        name_client: e.target.value
+        clienteId: e.target.value
       })
     }
     
-    if(!input.date){
+    if(!input.fecha){
     (function handleDate(){
       setInput({
         ...input,
-        date: date
+        fecha: fecha
       })
     })()}
+
+    if(!input.orderNumber){(async function handleOrderNumber(){
+      const nroPedido = await dispatch(getOrderNumber())
+      console.log(nroPedido.payload[0].nroPedido)
+      setInput({
+        ...input,
+        orderNumber: nroPedido.payload[0].nroPedido
+            })
+    })()}
+
+    if(input.orderNumber){(function modifyOrderNumber(){
+      const orderId = input.orderNumber
+      dispatch(changeOrderNumber(orderId))
+    })()}
     
-    
+    // function subTotalUpdate(){
+    //   const subTotal = input.costo * input.cantidad
+    //   // console.log(input.cantidad)
+    //   console.log(subTotal)
+    // }
+
     function handleAddProd(e) {
       e.preventDefault();
-     if(input.descripcion){
-    
+     if(input.descripcion){   
      
       setInput({
         ...input,
-        cant: input.cant + 1,
-        products: [...input.products, input.descripcion]  
-      
+        cantidad: input.cantidad + 1,
+        products: [...input.products, input.descripcion],  
+        subTotal: input.costo * (input.cantidad + 1)
       });
+      // setInput({
+      //   ...input,
+      //   subTotal: input.costo * input.cantidad
+      // });
+      // subTotalUpdate();
 
-    }
-    
+    }    
     }
 
     function handleSubProd(e){
       e.preventDefault();
-      if(input.descripcion && input.cant>1){
+      if(input.descripcion && input.cantidad>1){
       
       input.products.splice(input.products.length-1,1);
       setInput({
         ...input,
-        cant: input.cant - 1,
-        products: input.products
+        cantidad: input.cantidad - 1,
+        products: input.products,
+        subTotal: input.costo * (input.cantidad - 1)
+        
       });
+      // subTotalUpdate();
     }
     }
+
+
     
     async function handleSelectProducts(e){
       
@@ -86,7 +128,7 @@ import getDate from "../../utils/functions/getDate";
           input.products.splice(0,input.products.length);
           setInput({
             ...input,
-            cant: 1,
+            cantidad: 1,
             products: input.products,
             descripcion: "",
           })
@@ -94,16 +136,30 @@ import getDate from "../../utils/functions/getDate";
           
           console.log(e.target.value)
           const idProduct = await dispatch(getProductId(e.target.value))
-          
+          const iva = 1 + idProduct.payload.porcentaje/100
+          const unitCost = parseInt(idProduct.payload.costoBonif)
+          console.log(unitCost)
+          console.log(typeof(unitCost))
+          console.log(iva)
+          console.log(typeof(iva))
+          const unitCostIva = unitCost + iva
+          console.log(unitCostIva)
+
           console.log(idProduct.payload.descripcion)
           setInput({
           ...input,
-          cant: 1,
+          cantidad: 1,
           products: [...input.products,  idProduct.payload.descripcion],
           descripcion: idProduct.payload.descripcion,
-          inventarioId: e.target.value
+          inventarioId: e.target.value,
+          costo: unitCostIva,
+          subTotal: unitCostIva * input.cantidad
 
         });
+          // setInput({
+          //   ...input,
+          //   subTotal: input.costo * input.cantidad
+          // })  
         
       
       } else {
@@ -113,6 +169,13 @@ import getDate from "../../utils/functions/getDate";
         );
       }
     }
+
+    async function handleSubmit(e){
+      e.preventDefault();
+      await dispatch(postTransac(input));
+    }
+
+    console.log(input.cantidad)
     useEffect(() => {
       dispatch(getAllSellers());
       dispatch(getAllProducts());
@@ -127,15 +190,18 @@ import getDate from "../../utils/functions/getDate";
     const sellers = useSelector((state) => state.allSellers);
     
     const clients = useSelector((state) => state.selectClients);
-    // clients.clientes.map((e)=>(console.log(e)))
-    
-    // sellers.map((e)=>(console.log(e.vendedor)))
+    // console.log(clients)
     console.log(input)
+    // console.log("ProductId:")
+    // console.log(productId)
+    // console.log("products:")
+    // console.log(products)
+    
     return(
         <div className={Styles.containMaster}>
       <div className={Styles.contain}>
         <div className={Styles.description}>
-          <form className={Styles.form} 
+          <form className={Styles.form} onSubmit={(e) => handleSubmit(e)}
           >
             <div className={Styles.titleActivities}>
               <h2>Nueva transacción</h2>
@@ -160,7 +226,7 @@ import getDate from "../../utils/functions/getDate";
                   Seleccionar cliente
                 </option>
                 {clients.clientes && clients.clientes.map((el) => (
-                  <option value={el.name} key={el.id} >
+                  <option value={el.id} key={el.id} >
                     {el.name}
                   </option>
                ))}
@@ -168,7 +234,7 @@ import getDate from "../../utils/functions/getDate";
               </div>
             <div>
               <label>Fecha de compra:</label>
-              <div >{date}</div>
+              <div >{fecha}</div>
             </div>
             <div>
             <label>Productos:</label>
@@ -176,7 +242,7 @@ import getDate from "../../utils/functions/getDate";
              <option value={"default"} disable>
                   Seleccionar producto
                 </option>
-                {products.map((el) => (
+                {products && products.map((el) => (
                   <option  value={el.id} key={el.descripcion}>
                     {el.descripcion}
                   </option>
@@ -184,8 +250,8 @@ import getDate from "../../utils/functions/getDate";
              </select>
               </div>  
               <div>
-                <label>Cantidad:</label>
-                <div>{input.cant}</div>
+                <label>cantidadidad:</label>
+                <div>{input.cantidad}</div>
               <div>
               <button
               onClick={(e)=>handleAddProd(e)}
@@ -198,6 +264,9 @@ import getDate from "../../utils/functions/getDate";
                   -
                 </button>
               </div>            
+              </div>
+              <div>
+                <input type="submit" value="Agregar"/>
               </div>
             </form>
             </div>
