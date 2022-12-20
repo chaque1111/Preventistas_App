@@ -20,19 +20,6 @@ import getDate from "../../utils/functions/getDate";
       descripcion: "",
       inventarioId: "",
       orderNumber: ""
-
-
-      // vendedorId,
-      // clienteId,
-      // inventarioId,
-      // descripcion,
-      // costo,
-      // cantidad,
-      // subTotal,
-      // fecha,
-      // observacion,
-      // orderNumber,
-      
     })
     
     const fecha = getDate()
@@ -71,16 +58,11 @@ import getDate from "../../utils/functions/getDate";
             })
     })()}
 
-    if(input.orderNumber){(function modifyOrderNumber(){
+  
+    function modifyOrderNumber(){
       const orderId = input.orderNumber
       dispatch(changeOrderNumber(orderId))
-    })()}
-    
-    // function subTotalUpdate(){
-    //   const subTotal = input.costo * input.cantidad
-    //   // console.log(input.cantidad)
-    //   console.log(subTotal)
-    // }
+    }
 
     function handleAddProd(e) {
       e.preventDefault();
@@ -91,13 +73,7 @@ import getDate from "../../utils/functions/getDate";
         cantidad: input.cantidad + 1,
         products: [...input.products, input.descripcion],  
         subTotal: input.costo * (input.cantidad + 1)
-      });
-      // setInput({
-      //   ...input,
-      //   subTotal: input.costo * input.cantidad
-      // });
-      // subTotalUpdate();
-
+      });      
     }    
     }
 
@@ -113,11 +89,8 @@ import getDate from "../../utils/functions/getDate";
         subTotal: input.costo * (input.cantidad - 1)
         
       });
-      // subTotalUpdate();
     }
     }
-
-
     
     async function handleSelectProducts(e){
       
@@ -132,20 +105,12 @@ import getDate from "../../utils/functions/getDate";
             products: input.products,
             descripcion: "",
           })
-          console.log([e.target])
-          
-          console.log(e.target.value)
+     
           const idProduct = await dispatch(getProductId(e.target.value))
           const iva = 1 + idProduct.payload.porcentaje/100
-          const unitCost = parseInt(idProduct.payload.costoBonif)
-          console.log(unitCost)
-          console.log(typeof(unitCost))
-          console.log(iva)
-          console.log(typeof(iva))
+          const unitCost = parseInt(idProduct.payload.costoBonif)          
           const unitCostIva = unitCost + iva
-          console.log(unitCostIva)
-
-          console.log(idProduct.payload.descripcion)
+          
           setInput({
           ...input,
           cantidad: 1,
@@ -156,12 +121,6 @@ import getDate from "../../utils/functions/getDate";
           subTotal: unitCostIva * input.cantidad
 
         });
-          // setInput({
-          //   ...input,
-          //   subTotal: input.costo * input.cantidad
-          // })  
-        
-      
       } else {
         e.target.value = input.descripcion;
         return alert(
@@ -173,9 +132,44 @@ import getDate from "../../utils/functions/getDate";
     async function handleSubmit(e){
       e.preventDefault();
       await dispatch(postTransac(input));
+      // await modifyOrderNumber();
+
+      const initValue = "default"
+
+      document.getElementById("Sellers").value = document.getElementById("Clients").value = document.getElementById("Products").value = initValue;
+     
+      setInput({
+        vendedorId: "",
+        clienteId: "",
+        fecha: "",
+        products: [],
+        cantidad: 1,
+        costo: "",
+        subTotal: "",
+        descripcion: "",
+        inventarioId: "",
+        orderNumber: ""
+      })
     }
 
-    console.log(input.cantidad)
+    async function handleFinishOrder(e){
+      e.preventDefault();
+      await modifyOrderNumber();
+      setInput({
+        vendedorId: "",
+        clienteId: "",
+        fecha: "",
+        products: [],
+        cantidad: 1,
+        costo: "",
+        subTotal: "",
+        descripcion: "",
+        inventarioId: "",
+        orderNumber: ""
+      })
+    }
+
+    
     useEffect(() => {
       dispatch(getAllSellers());
       dispatch(getAllProducts());
@@ -190,12 +184,7 @@ import getDate from "../../utils/functions/getDate";
     const sellers = useSelector((state) => state.allSellers);
     
     const clients = useSelector((state) => state.selectClients);
-    // console.log(clients)
-    console.log(input)
-    // console.log("ProductId:")
-    // console.log(productId)
-    // console.log("products:")
-    // console.log(products)
+    
     
     return(
         <div className={Styles.containMaster}>
@@ -207,9 +196,9 @@ import getDate from "../../utils/functions/getDate";
               <h2>Nueva transacción</h2>
             </div>
             <div className={Styles.divName}>
-              <label>Nombre Vendedor:</label>
-             <select defaultValue={"default"} onChange={(e) => handleSelectSellers(e)}>
-             <option name={"default"} value={"default"} disable>
+              <label>Nombre Vendedor:</label>             
+             <select id={"Sellers"} defaultValue={"default"} onChange={(e) => handleSelectSellers(e)}>
+             <option name={"default"} value={"default"} enable>
                   Seleccionar Vendedor
                 </option>
                 {sellers.map((el) => (
@@ -221,7 +210,7 @@ import getDate from "../../utils/functions/getDate";
               </div>
             <div className={Styles.divName}>
               <label>Nombre cliente:</label>
-             <select defaultValue={"default"} onChange={(e) => handleSelectClients(e)}>
+             <select id={"Clients"} defaultValue={"default"} onChange={(e) => handleSelectClients(e)}>
              <option value={"default"} disable>
                   Seleccionar cliente
                 </option>
@@ -238,7 +227,7 @@ import getDate from "../../utils/functions/getDate";
             </div>
             <div>
             <label>Productos:</label>
-            <select defaultValue={"default"} onChange={(e) => handleSelectProducts(e)}>
+            <select id={"Products"} defaultValue={"default"} onChange={(e) => handleSelectProducts(e)}>
              <option value={"default"} disable>
                   Seleccionar producto
                 </option>
@@ -269,6 +258,9 @@ import getDate from "../../utils/functions/getDate";
                 <input type="submit" value="Agregar"/>
               </div>
             </form>
+            <div>
+                <button onClick={(e) => handleFinishOrder(e)}>Finalizar Pedido</button>
+              </div>
             </div>
            
         </div>

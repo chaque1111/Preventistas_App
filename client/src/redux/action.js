@@ -54,7 +54,7 @@ export function getOrderNumber() {
 
 export function changeOrderNumber(id) {
   const modify = id + 1;
-  console.log(modify);
+
   return async (dispatch) => {
     const res = await axios.put("/transacciones/pedido/" + modify);
     return res.json;
@@ -62,7 +62,6 @@ export function changeOrderNumber(id) {
 }
 
 export function postTransac(payload) {
-  console.log(payload);
   return async function (dispatch) {
     try {
       const res = await axios.post("/transacciones/", payload);
