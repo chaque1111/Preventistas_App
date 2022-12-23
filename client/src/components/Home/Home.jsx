@@ -16,6 +16,9 @@ export default function Home() {
         <Link to='/sellers'>
           <button className={styles.btnClient}>Vendedores</button>
         </Link>
+        <Link to='/products'>
+          <button>Productos</button>
+        </Link>
       </div>
     </div>
   );

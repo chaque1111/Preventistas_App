@@ -6,7 +6,7 @@ import Cookies from "universal-cookie";
 
 export default function LandingPage() {
   const cookies = new Cookies();
-  const distpatch = useDispatch();
+  const dispatch = useDispatch();
   const history = useHistory();
   const sellers = useSelector((state) => state.allSellers);
   const userSession = useSelector((state) => state.user);
@@ -36,13 +36,13 @@ export default function LandingPage() {
   };
 
   const submit = async () => {
-    distpatch(refresh());
-    distpatch(logIng(seller));
-    if (userSession.name) {
-      console.log(userSession);
-      cookies.set("userId", userSession.id, {path: "/"});
-      cookies.set("userName", userSession.name, {path: "/"});
-      cookies.set("userlocalidad", userSession.localidad, {path: "/"});
+    dispatch(refresh());
+    const loaded = await dispatch(logIng(seller)).then((res) =>
+      res === false ? false : true
+    );
+    if (!loaded) {
+      return alert("contraseña incorrecta");
+    } else {
       history.push("/user");
     }
   };
@@ -51,7 +51,7 @@ export default function LandingPage() {
     if (cookies.get("userName")) {
       history.push("/user");
     }
-    distpatch(getAllSellers());
+    dispatch(getAllSellers());
   }, []);
 
   return (
@@ -71,7 +71,7 @@ export default function LandingPage() {
       <p>contraseña</p>
       <input type='password' onChange={(e) => handleChanguePassword(e)} />
 
-      <button onClick={(e) => submit()}>iniciar sesion</button>
+      <button onClick={(e) => submit(e)}>iniciar sesion</button>
     </div>
   );
 }
