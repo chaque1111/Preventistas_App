@@ -1,11 +1,11 @@
 import React, {useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
-import {getProductById} from "../../redux/action";
+import {getProductId} from "../../redux/action";
 export default function ProductDetail(props) {
   const dispatch = useDispatch();
-  const product = useSelector((state) => state.product);
+  const product = useSelector((state) => state.productId);
   useEffect(() => {
-    dispatch(getProductById(props.match.params.id));
+    dispatch(getProductId(props.match.params.id));
   }, []);
   return (
     <div>

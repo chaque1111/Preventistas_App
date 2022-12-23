@@ -2,12 +2,17 @@ import Cookies from "universal-cookie";
 
 const initialState = {
   allClients: [],
-  selectClient: [],
   clienstBySeller: [],
+  client: "",
+  seller: "",
+  selectClients: {},
   allProducts: [],
   product: {},
   allSellers: [],
   user: [],
+  productId: {},
+  orderNumber: "",
+  estado: true,
 };
 
 function reducer(state = initialState, {type, payload}) {
@@ -23,6 +28,7 @@ function reducer(state = initialState, {type, payload}) {
       return {
         ...state,
         selectClients: payload,
+        seller: payload.name,
       };
 
     case "FILTER_BY_SELLERS":
@@ -36,13 +42,18 @@ function reducer(state = initialState, {type, payload}) {
         ...state,
         selectClients: sellerFilter,
       };
+    case "GET_CLIENTS":
+      return {
+        ...state,
+        allClients: payload,
+        // selectClients: payload,
+      };
 
     case "GET_PRODUCTS":
       return {
         ...state,
         allProducts: payload,
       };
-
     case "LOG_ING":
       cookie.set("userId", payload.id, {path: "/"});
       cookie.set("userName", payload.name, {path: "/"});
@@ -73,15 +84,34 @@ function reducer(state = initialState, {type, payload}) {
         clienstBySeller: payload,
       };
     //products
-    case "GET_PRODUCT":
-      return {
-        ...state,
-        product: payload,
-      };
     case "REFRESH":
       return {
         ...state,
         user: [],
+      };
+
+    case "GET_PRODUCT_ID":
+      return {
+        ...state,
+        productId: payload,
+      };
+
+    case "GET_ORDER_NUMBER":
+      return {
+        ...state,
+        orderNumber: payload,
+      };
+
+    case "OPEN_TRANSACTION":
+      return {
+        ...state,
+        estado: false,
+      };
+
+    case "CLOSE_TRANSACTION":
+      return {
+        ...state,
+        estado: true,
       };
 
     default:

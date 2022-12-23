@@ -1,6 +1,8 @@
 import "./App.css";
 // import { BrowserRouter, Route, Switch } from "react-router-dom";
-import {Route, Switch} from "react-router-dom";
+import {Route} from "react-router-dom";
+import React from "react";
+
 import Home from "./components/Home/Home.jsx";
 import Nav from "./components/Nav/Nav.jsx";
 import Clients from "./components/Clients/Clients";
@@ -17,10 +19,9 @@ function App() {
     <div className='App'>
       <Route exact path='/' component={LandingPage}></Route>
       <Route exact path='/user' component={HomeUser}></Route>
-      <Route exact path='/home' component={Home} />
       <Route exact path='/clients' component={Clients} />
-      <Route exact path='/transactions' component={FormTrans} />
       <Route exact path='/sellers' component={Sellers} />
+      <Route exact path='/transactions' component={FormTrans} />
       <Route exact path='/products' component={Products}></Route>
       <Route exact path='/detail/:id' component={ClientDetail} />
       <Route exact path='/product/:id' component={ProductDetail}></Route>

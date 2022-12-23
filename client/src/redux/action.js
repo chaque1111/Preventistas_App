@@ -36,7 +36,6 @@ export function getClientById(id) {
   };
 }
 export function getClientsBySeller(id) {
-  console.log(id);
   return async (dispatch) => {
     const res = await axios("/clientes/seller/" + id);
     return dispatch({type: "CLIENTS_BY_SELLER", payload: res.data});
@@ -50,12 +49,6 @@ export function getAllProducts() {
   };
 }
 
-export function getProductById(id) {
-  return async function (dispatch) {
-    const product = await axios("/inventario/" + id);
-    return dispatch({type: "GET_PRODUCT", payload: product.data});
-  };
-}
 export function logIng(seller) {
   return async (dispatch) => {
     const res = await axios.put("/vendedores/log", seller);
@@ -78,4 +71,49 @@ export function searchClient(obj) {
     const searchClients = await axios.put("/clientes/search", obj);
     return dispatch({type: "SEARCH_CLIENT", payload: searchClients.data});
   };
+}
+
+export function getProductId(id) {
+  return async (dispatch) => {
+    const res = await axios("/inventario/" + id);
+    return dispatch({type: "GET_PRODUCT_ID", payload: res.data});
+  };
+}
+
+export function getOrderNumber() {
+  return async (dispatch) => {
+    const res = await axios("/transacciones/pedido");
+    return dispatch({type: "GET_ORDER_NUMBER", payload: res.data});
+  };
+}
+
+export function changeOrderNumber(id) {
+  const modify = id + 1;
+
+  return async (dispatch) => {
+    const res = await axios.put("/transacciones/pedido/" + modify);
+    return res.json;
+  };
+}
+
+export function postTransac(payload) {
+  return async function (dispatch) {
+    try {
+      const res = await axios.post("/transacciones/", payload);
+
+      return res;
+    } catch (error) {
+      if (error.response) {
+        return alert(error.response.data);
+      }
+    }
+  };
+}
+
+export function openTransaction() {
+  return {type: "OPEN_TRANSACTION"};
+}
+
+export function closeTransaction() {
+  return {type: "CLOSE_TRANSACTION"};
 }

@@ -8,6 +8,7 @@ export default function Nav() {
   // const dispatch = useDispatch();
 
   // useEffect(() => {}, [dispatch]);
+ 
 
   return (
     <nav className={styles.nav}>
