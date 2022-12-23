@@ -5,9 +5,7 @@ const initialState = {
   clienstBySeller: [],
   client: "",
   seller: "",
-  selectClients: {},
   allProducts: [],
-  product: {},
   allSellers: [],
   user: [],
   productId: {},
@@ -27,7 +25,6 @@ function reducer(state = initialState, {type, payload}) {
     case "GET_SELLERS_ID":
       return {
         ...state,
-        selectClients: payload,
         seller: payload.name,
       };
 
@@ -46,7 +43,6 @@ function reducer(state = initialState, {type, payload}) {
       return {
         ...state,
         allClients: payload,
-        // selectClients: payload,
       };
 
     case "GET_PRODUCTS":
@@ -62,7 +58,6 @@ function reducer(state = initialState, {type, payload}) {
         ...state,
         user: payload,
       };
-    ///clientes
     case "GET_CLIENTS":
       return {
         ...state,

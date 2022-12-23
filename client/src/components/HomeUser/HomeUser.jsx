@@ -15,6 +15,7 @@ export default function () {
     <div>
       <button onClick={() => logout()}>cerrar sesion</button>
       <h1>Hola {cookie.get("userName")}</h1>
+      <h1>id: {cookie.get("userId")}</h1>
       <h1>a qué seccion quieres ir?</h1>
 
       <Link to='/clients'>
