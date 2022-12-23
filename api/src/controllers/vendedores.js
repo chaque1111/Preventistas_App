@@ -40,6 +40,7 @@ const PrecargaVendedores = async () => {
       recibonroSUC: e.ReciboNroSuc ? e.ReciboNroSuc : "not found",
       recibonroDde: e.ReciboNroDde ? e.ReciboNroDde : "not found",
       recibonroHTA: e.ReciboNroHta ? e.ReciboNroHta : "not found",
+      password: "12345t",
     };
   });
 
@@ -92,8 +93,24 @@ const getVendedorById = async (req, res) => {
   }
 };
 
+const logIng = async (req, res) => {
+  try {
+    const seller = req.body;
+    const sellerById = await Vendedor.findByPk(seller.id);
+    console.log(sellerById);
+    if (sellerById.password === seller.password) {
+      res.status(200).send(sellerById);
+    } else {
+      res.status(200).send(false);
+    }
+  } catch (e) {
+    res.status(400).send(e);
+  }
+};
+
 module.exports = {
   PrecargaVendedores,
   getAllVendedores,
   getVendedorById,
+  logIng,
 };

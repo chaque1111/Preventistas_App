@@ -122,9 +122,36 @@ const getClientById = async (req, res) => {
   }
 };
 
+const getClientBySeller = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const vendedor = await Vendedor.findByPk(id, {include: Cliente});
+    console.log(vendedor);
+    res.status(200).json(vendedor.clientes);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+};
+
+const searchClientsBySeller = async (req, res) => {
+  try {
+    const sellerId = req.body.sellerId;
+    const nameClient = req.body.nameClient;
+    const vendedor = await Vendedor.findByPk(sellerId, {include: Cliente});
+    const clientesFilter = vendedor.clientes.filter((e) =>
+      e.name.toUpperCase().includes(nameClient.toUpperCase())
+    );
+    res.status(200).json(clientesFilter);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
 module.exports = {
   ExcelToJson,
   PrecargaClientes,
   getAllClients,
   getClientById,
+  getClientBySeller,
+  searchClientsBySeller,
 };
