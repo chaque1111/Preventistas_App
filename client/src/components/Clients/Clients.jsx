@@ -22,9 +22,9 @@ export default function Clients() {
            {clients.length > 0 ? (
             clients.map((e) => {
               return (
-                <div key={e.id} className={styles.singleCard}>
+                <div key={e.id_client} className={styles.singleCard}>
                   {/* <Link to={"/detail/" + e.id}> */}
-                    <Card name={e.name} localidad={e.localidad} vendedor={e.nombreVendedor} zona={e.zona}/>
+                    <Card name={e.name_client} vendedor={e.name_seller} />
                   {/* </Link> */}
                   {/* <h5>{e.name}</h5> */}
                 </div>
