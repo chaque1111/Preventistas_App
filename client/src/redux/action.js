@@ -26,8 +26,15 @@ export function getFilterSellers(payload) {
 
 export function getAllClients() {
   return async (dispatch) => {
-    const res = await axios("/clientes");
+    const res = await axios("/clientes/");
     return dispatch({ type: "GET_CLIENTS", payload: res.data });
+  };
+}
+
+export function getClientsId(id) {
+  return async (dispatch) => {
+    const res = await axios("/clientes/" + id);
+    return dispatch({ type: "GET_CLIENTS_ID", payload: res.data });
   };
 }
 
@@ -73,4 +80,12 @@ export function postTransac(payload) {
       }
     }
   };
+}
+
+export function openTransaction() {
+  return { type: "OPEN_TRANSACTION" };
+}
+
+export function closeTransaction() {
+  return { type: "CLOSE_TRANSACTION" };
 }

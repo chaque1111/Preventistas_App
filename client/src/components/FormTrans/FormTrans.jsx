@@ -2,12 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Styles from "../FormTrans/FormTrans.module.css"
-import { getAllSellers, getAllClients, getAllProducts, getSellersId, getFilterSellers, getProductId, getOrderNumber, changeOrderNumber, postTransac } from "../../redux/action";
+import { getAllSellers, getAllClients, getAllProducts, getSellersId, getFilterSellers, getProductId, getOrderNumber, changeOrderNumber, postTransac, closeTransaction, openTransaction, getClientsId } from "../../redux/action";
 import getDate from "../../utils/functions/getDate";
 
   
   export default function NewTransactions() {
     const dispatch = useDispatch();
+    const history = useHistory();
+
+    useEffect(async() => {
+      await dispatch(openTransaction());
+      
+    }, [dispatch]);
     
     const [input, setInput] = useState({
       vendedorId: "",
@@ -34,11 +40,23 @@ import getDate from "../../utils/functions/getDate";
       })
     }
     
+    if(input.vendedorId){
+      const initValue = "sellerSelect";
+      document.getElementById("Sellers").value = initValue;
+    }
+
     function handleSelectClients(e){
+      dispatch(getClientsId(e.target.value))
       setInput({
         ...input,
         clienteId: e.target.value
       })
+     
+    }
+
+    if(input.clienteId){
+      const initValue = "clientSelect";
+      document.getElementById("Clients").value = initValue;
     }
     
     if(!input.fecha){
@@ -132,15 +150,13 @@ import getDate from "../../utils/functions/getDate";
     async function handleSubmit(e){
       e.preventDefault();
       await dispatch(postTransac(input));
-      // await modifyOrderNumber();
-
       const initValue = "default"
 
-      document.getElementById("Sellers").value = document.getElementById("Clients").value = document.getElementById("Products").value = initValue;
+      document.getElementById("Products").value = initValue;
      
       setInput({
-        vendedorId: "",
-        clienteId: "",
+        vendedorId: input.vendedorId,
+        clienteId: input.clienteId,
         fecha: "",
         products: [],
         cantidad: 1,
@@ -167,6 +183,13 @@ import getDate from "../../utils/functions/getDate";
         inventarioId: "",
         orderNumber: ""
       })
+
+      const initValue = "default"
+
+      document.getElementById("Sellers").value = document.getElementById("Clients").value = document.getElementById("Products").value = initValue;
+
+      // dispatch(closeTransaction()); 
+      history.push("/");
     }
 
     
@@ -179,12 +202,16 @@ import getDate from "../../utils/functions/getDate";
     const products = useSelector((state) => state.allProducts);
 
     const productId = useSelector((state) => state.productId);
-    
-    
+        
     const sellers = useSelector((state) => state.allSellers);
     
     const clients = useSelector((state) => state.selectClients);
+
+    const chosenSeller = useSelector((state) => state.seller);
     
+
+    const chosenClient = useSelector((state) => state.client);
+    console.log(chosenClient)
     
     return(
         <div className={Styles.containMaster}>
@@ -192,43 +219,50 @@ import getDate from "../../utils/functions/getDate";
         <div className={Styles.description}>
           <form className={Styles.form} onSubmit={(e) => handleSubmit(e)}
           >
-            <div className={Styles.titleActivities}>
-              <h2>Nueva transacción</h2>
+            <div className={Styles.masterOrden}>
+              <div className={Styles.containOrden}>
+              <div>Orden de compra nro: {input.orderNumber}</div>
+              <div>{fecha}</div>
+              
+              </div>  
             </div>
-            <div className={Styles.divName}>
-              <label>Nombre Vendedor:</label>             
-             <select id={"Sellers"} defaultValue={"default"} onChange={(e) => handleSelectSellers(e)}>
-             <option name={"default"} value={"default"} enable>
+            <div className={Styles.masterSellClient}>
+              <div className={Styles.containSellClient}>
+             <select className={Styles.select} id={"Sellers"} defaultValue={"default"} onChange={(e) => handleSelectSellers(e)}>
+             <option name={"default"} value={"default"} disabled>
                   Seleccionar Vendedor
                 </option>
-                {sellers.map((el) => (
+                {!input.vendedorId ? sellers && sellers.map((el) => (
                   <option value={el.vendedor.id} key={el.vendedor.name}>
                     {el.vendedor.name}
                   </option>
-                ))}
+                )): <option value={"sellerSelect"}>Vendedor seleccionado</option>}
              </select>
-              </div>
-            <div className={Styles.divName}>
-              <label>Nombre cliente:</label>
-             <select id={"Clients"} defaultValue={"default"} onChange={(e) => handleSelectClients(e)}>
-             <option value={"default"} disable>
+             <select className={Styles.select} id={"Clients"} defaultValue={"default"} onChange={(e) => handleSelectClients(e)}>
+             <option value={"default"} disabled>
                   Seleccionar cliente
                 </option>
-                {clients.clientes && clients.clientes.map((el) => (
+                {!input.clienteId ? clients.clientes && clients.clientes.map((el) => (
                   <option value={el.id} key={el.id} >
                     {el.name}
                   </option>
-               ))}
+               )): <option value={"clientSelect"}>Cliente seleccionado</option>}
              </select>
+             </div>
+              </div>  
+
+              <div className={Styles.masterChosenPeople}>                
+                <div className={Styles.containChosenPeople}>
+                  <div className={Styles.chosenSeller}>{chosenSeller}</div>
+                  <div className={Styles.chosenClient}>{chosenClient}</div>
+                </div>
               </div>
-            <div>
-              <label>Fecha de compra:</label>
-              <div >{fecha}</div>
-            </div>
-            <div>
-            <label>Productos:</label>
-            <select id={"Products"} defaultValue={"default"} onChange={(e) => handleSelectProducts(e)}>
-             <option value={"default"} disable>
+              {/* <div className={Styles.principalProduct}> */}
+              <div className={Styles.masterCantidad}>
+                <div className={Styles.containCantidad}>
+                
+            <select className={Styles.select} id={"Products"} defaultValue={"default"} onChange={(e) => handleSelectProducts(e)}>
+             <option value={"default"} disabled>
                   Seleccionar producto
                 </option>
                 {products && products.map((el) => (
@@ -237,29 +271,37 @@ import getDate from "../../utils/functions/getDate";
                   </option>
                 ))}
              </select>
-              </div>  
-              <div>
-                <label>cantidadidad:</label>
-                <div>{input.cantidad}</div>
-              <div>
-              <button
+               
+                <div>Cantidad: {input.cantidad}</div>
+                <div className={Styles.principalCantidad}>
+              <div className={Styles.masterButton}>
+                <div className={Styles.containButton}>
+              <button className={Styles.btnCant}
               onClick={(e)=>handleAddProd(e)}
               >+</button>
-              </div>              
-              <div >
-                <button                 
+             
+                <button className={Styles.btnCant}                
                   onClick={(e) => handleSubProd(e)}
                 >
                   -
                 </button>
-              </div>            
+                </div>
+              </div>  
+                
+              </div> 
+              <div className={Styles.containButtonAdd}>
+                <div className={Styles.buttonAdd}>
+                <input className={Styles.btn} type="submit" value="Agregar"/>
+                </div>
               </div>
-              <div>
-                <input type="submit" value="Agregar"/>
               </div>
+              </div>         
+              {/* </div> */}
             </form>
-            <div>
-                <button onClick={(e) => handleFinishOrder(e)}>Finalizar Pedido</button>
+            <div className={Styles.containFinishOrder}>
+            <div className={Styles.finishOrder}>
+                <button className={Styles.btn} onClick={(e) => handleFinishOrder(e)}>Finalizar Pedido</button>
+              </div>
               </div>
             </div>
            
