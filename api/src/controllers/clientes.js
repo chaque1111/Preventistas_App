@@ -30,7 +30,7 @@ const clientes = ExcelToJson();
 
 const PrecargaClientes = async () => {
   try {
-    PrecargaVendedores();
+    await PrecargaVendedores();
     const arrayC = clientes.map((e) => {
       return {
         id: e.Codigo,
@@ -68,10 +68,12 @@ const PrecargaClientes = async () => {
       let vendedor = await Vendedor.findOne({
         where: {name: arreglo[i].nombreVendedor},
       });
-      // await Cliente.update({vendedorId: vendedor.id},
-      //     {
-      //         where:{id : cliente.id }
-      //     })
+      await Cliente.update(
+        {vendedorId: vendedor.id},
+        {
+          where: {id: cliente.id},
+        }
+      );
       cliente.vendedorId = vendedor.id;
       await cliente.save();
     }
