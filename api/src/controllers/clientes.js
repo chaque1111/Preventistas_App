@@ -131,16 +131,11 @@ const getClientBySeller = async (req, res) => {
       return {
         id: e.id,
         name: e.name,
-        rzsocial: e.rzsocial,
-        localidad: e.localidad,
-        direccion: e.direccion,
-        provincia: e.provincia,
         nombreVendedor: e.nombreVendedor,
-        zona: e.zona,
-        activo: e.activo,
-        vendedorId: 5,
+        vendedorId: e.vendedorId,
       };
     });
+
     res.status(200).json(Clientes);
   } catch (error) {
     res.status(404).send(error);
