@@ -136,7 +136,7 @@ const getClientBySeller = async (req, res) => {
       };
     });
 
-    res.status(200).json(Clientes);
+    res.status(200).json(vendedor.clientes);
   } catch (error) {
     res.status(404).send(error);
   }
