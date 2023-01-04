@@ -74,8 +74,8 @@ const PrecargaClientes = async () => {
           where: {id: cliente.id},
         }
       );
-      cliente.vendedorId = vendedor.id;
-      await cliente.save();
+      // cliente.vendedorId = vendedor.id;
+      // await cliente.save();
     }
   } catch (e) {
     console.log(e);
