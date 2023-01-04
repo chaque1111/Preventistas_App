@@ -5,13 +5,18 @@ import styles from "./Card.module.css";
 export default function Card({id, name, localidad, vendedor, zona}) {
   return (
     <div className={styles.cardContainer}>
-      <div className={styles.name}>Nombre cliente: {name}</div>
+      <h1 className={styles.name}>
+        Nombre:{" "}
+        {name.length < 13
+          ? name
+          : name.split("").slice(0, 13).join("").toLowerCase() + "..."}
+      </h1>
       <img
         className={styles.img}
-        src='https://www.shutterstock.com/image-vector/incognito-sticker-logo-browse-private-260nw-1959585967.jpg'
+        src='https://tse3.mm.bing.net/th?id=OIP.NP6uiJB-2iOM-gyKoNnlzAAAAA&pid=Api&P=0'
         alt='not found'
       />
-      <div className={styles.vendedor}>Vendedor: {vendedor}</div>
+      <h1 className={styles.vendedor}>Vendedor: {vendedor}</h1>
     </div>
   );
 }

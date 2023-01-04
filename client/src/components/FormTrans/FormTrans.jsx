@@ -59,6 +59,7 @@ export default function NewTransactions() {
 
   function handleSelectClients(e) {
     dispatch(getClientById(e.target.value));
+    
     setInput({
       ...input,
       clienteId: e.target.value,

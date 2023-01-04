@@ -2,43 +2,40 @@ import React, {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import Cookies from "universal-cookie";
 import {searchClient} from "../../redux/action";
-
+import styles from "../SearchBarClient/SearchBar.module.css";
 export default function ({setPage}) {
   const dispatch = useDispatch();
   const cookies = new Cookies();
-  const [inputObj, setInputObj] = useState({
-    sellerId: cookies.get("userId"),
-    nameClient: "",
-  });
+  const [inputName, setInputName] = useState("");
 
   const handleChangueInput = (e) => {
-    setInputObj({
-      ...inputObj,
-      nameClient: e.target.value,
-    });
+    setInputName(e.target.value);
   };
   const handleSubmit = () => {
-    if (inputObj.nameClient === "") {
+    if (inputName === "") {
       return alert("por favor, ingresa un nombre");
     }
-    dispatch(searchClient(inputObj));
-    setInputObj({
-      ...inputObj,
-      nameClient: "",
-    });
+    dispatch(searchClient(inputName));
+    setInputName("");
     setPage(1);
   };
+
   return (
-    <div>
+    <div className={styles.search}>
       <input
+        id='text'
+        className={styles.input}
         type='text'
         onChange={(e) => handleChangueInput(e)}
-        value={inputObj.nameClient}
-        placeholder='cliente'
+        value={inputName}
+        placeholder='Buscar...'
       />
-      <button type='submit' onClick={(e) => handleSubmit(e)}>
-        buscar
-      </button>
+
+      <button
+        className={styles.button}
+        type='submit'
+        onClick={(e) => handleSubmit(e)}
+      ></button>
     </div>
   );
 }
