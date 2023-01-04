@@ -1,38 +1,13 @@
-/* body {
+body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-} */
-
-body {    
-  /* background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../src/images/background2.jpg"); */
-  /* background-color: papayawhip;      */
-  background-color: #d1eaf3ef;
-
-  background-position: center center;
-  background-repeat: no-repeat;
-  /* background-blend-mode: darken; */
-  /* background-repeat:repeat; */
-  background-attachment: fixed;    
-  /* -webkit-font-smoothing: antialiased; */
-  /* background-image: url("../../assets/BKG_BookStore2.png"); */
-  /* background-size: contain; */
-  height: 100%;  
-  /* max-width:max-content;   */
-  width:100%;
-  /* margin: 0 auto;     */
-  /*  */
-  /* font-family: var(--font-poppins); */
-  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
--webkit-font-smoothing: antialiased;
-/* background-image: url("../src/images/BKG_BookStore2.png"); */
-background-size: cover;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }

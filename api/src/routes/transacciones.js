@@ -7,7 +7,7 @@ const {
 
 const router = Router();
 
-router.get("/pedido", getNumberOnder);
-router.put("/pedido/:number", putNumberOrder);
+router.get("/", getNumberOnder);
+router.put("/:number", putNumberOrder);
 router.post("/", createTransaction);
 module.exports = router;

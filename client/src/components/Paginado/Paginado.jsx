@@ -1,5 +1,5 @@
 import React from "react";
-
+import styles from "../Paginado/Paginado.module.css";
 export default function ({clienstPerPage, clients, setPage}) {
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(clients / clienstPerPage); i++) {
@@ -8,18 +8,18 @@ export default function ({clienstPerPage, clients, setPage}) {
 
   return (
     <nav>
-      <ul>
+      <div className={styles.container}>
         {pageNumbers &&
           pageNumbers.map((number) => (
             <button
-              className='button'
+              className={styles.button}
               key={number}
               onClick={() => setPage(number)}
             >
               {number}
             </button>
           ))}
-      </ul>
+      </div>
     </nav>
   );
 }

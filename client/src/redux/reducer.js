@@ -1,13 +1,13 @@
 import Cookies from "universal-cookie";
 
 const initialState = {
+  localidades: [],
   allClients: [],
   clienstBySeller: [],
+  clienstBySellerCopy: [],
   client: "",
   seller: "",
-  selectClients: {},
   allProducts: [],
-  product: {},
   allSellers: [],
   user: [],
   productId: {},
@@ -27,7 +27,6 @@ function reducer(state = initialState, {type, payload}) {
     case "GET_SELLERS_ID":
       return {
         ...state,
-        selectClients: payload,
         seller: payload.name,
       };
 
@@ -46,7 +45,6 @@ function reducer(state = initialState, {type, payload}) {
       return {
         ...state,
         allClients: payload,
-        // selectClients: payload,
       };
 
     case "GET_PRODUCTS":
@@ -62,7 +60,6 @@ function reducer(state = initialState, {type, payload}) {
         ...state,
         user: payload,
       };
-    ///clientes
     case "GET_CLIENTS":
       return {
         ...state,
@@ -72,13 +69,21 @@ function reducer(state = initialState, {type, payload}) {
       return {
         ...state,
         clienstBySeller: payload,
+        clienstBySellerCopy: payload,
       };
     case "GET_CLIENT_BY_ID":
       return {
         ...state,
         selectClient: payload,
+        client: payload.name,
       };
     case "SEARCH_CLIENT":
+      return {
+        ...state,
+        clienstBySeller: payload,
+      };
+
+    case "FILTER_CLIENTS":
       return {
         ...state,
         clienstBySeller: payload,
@@ -112,6 +117,11 @@ function reducer(state = initialState, {type, payload}) {
       return {
         ...state,
         estado: true,
+      };
+    case "GET_LOCALIDADES":
+      return {
+        ...state,
+        localidades: payload,
       };
 
     default:

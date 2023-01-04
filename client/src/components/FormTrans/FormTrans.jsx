@@ -49,6 +49,7 @@ export default function NewTransactions() {
       ...input,
       vendedorId: e.target.value,
     });
+    dispatch(getClientsBySeller(e.target.value));
   }
 
   if (input.vendedorId) {
@@ -58,6 +59,7 @@ export default function NewTransactions() {
 
   function handleSelectClients(e) {
     dispatch(getClientById(e.target.value));
+    
     setInput({
       ...input,
       clienteId: e.target.value,
@@ -205,7 +207,6 @@ export default function NewTransactions() {
   useEffect(() => {
     dispatch(getAllSellers());
     dispatch(getAllProducts());
-    dispatch(getClientsBySeller(cookies.get("userId")));
   }, [dispatch]);
 
   const products = useSelector((state) => state.allProducts);
@@ -214,7 +215,7 @@ export default function NewTransactions() {
 
   const sellers = useSelector((state) => state.allSellers);
 
-  const clients = useSelector((state) => state.selectClients);
+  const clients = useSelector((state) => state.clienstBySeller);
 
   const chosenSeller = useSelector((state) => state.seller);
 
@@ -266,8 +267,8 @@ export default function NewTransactions() {
                     Seleccionar cliente
                   </option>
                   {!input.clienteId ? (
-                    clients.clientes &&
-                    clients.clientes.map((el) => (
+                    clients &&
+                    clients.map((el) => (
                       <option value={el.id} key={el.id}>
                         {el.name}
                       </option>

@@ -3,7 +3,7 @@ import {Link, useHistory} from "react-router-dom";
 import {getAllSellers, logIng, refresh} from "../../redux/action";
 import {useDispatch, useSelector} from "react-redux";
 import Cookies from "universal-cookie";
-
+import Styles from "../LandingPage/Landing.module.css";
 export default function LandingPage() {
   const cookies = new Cookies();
   const dispatch = useDispatch();
@@ -12,15 +12,15 @@ export default function LandingPage() {
   const userSession = useSelector((state) => state.user);
   const [message, setMessage] = useState("");
   const [seller, setSeller] = useState({
-    id: "",
+    id: "seleccione un nombre",
     password: "",
   });
 
   const handleSelect = (e) => {
     if (e.target.value != 2) {
-      setMessage("usted es un vendedor, coloque su contraseña");
+      setMessage("USTED ES UN VENDEDOR, COLOQUE SU CONTRASEÑA");
     } else if (e.target.value == 2) {
-      setMessage("usted es un administrador, digite su contraseña");
+      setMessage("USTED ES UN ADMINISTRADOR, COLOQUE SU CONTRASEÑA");
     }
     setSeller({
       ...seller,
@@ -55,23 +55,43 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className='container'>
-      <h1>Bienvenido</h1>
-      <p>seleccione que vendedor es</p>
-
-      <select onChange={(e) => handleSelect(e)} name='selector'>
-        {sellers.length &&
-          sellers.map((e) => (
-            <option key={e.vendedor.id} value={e.vendedor.id}>
-              {e.vendedor.name}
-            </option>
-          ))}
-      </select>
-      {message.length ? <p>{message}</p> : ""}
-      <p>contraseña</p>
-      <input type='password' onChange={(e) => handleChanguePassword(e)} />
-
-      <button onClick={(e) => submit(e)}>iniciar sesion</button>
+    <div className={Styles.container}>
+      <div className={Styles.containWelcome}>
+        <h1 className={Styles.welcome}>Bienvenido </h1>
+        <h1 className={Styles.welcome}> a </h1>
+        <h1 className={Styles.welcome}> PreventistasApp</h1>
+      </div>
+      <div className={Styles.containSelect}>
+        <option value='' disabled selected hidden>
+          SELECCIONE UNA CUENTA
+        </option>
+        <p>SELECCIONE UNA CUENTA</p>
+        <select className={Styles.selectC} onChange={(e) => handleSelect(e)}>
+          <option value={seller.id}>SELECCIONE UN NOMBRE</option>
+          {sellers.length &&
+            sellers.map((e) => (
+              <option key={e.vendedor.id} value={e.vendedor.id}>
+                {e.vendedor.name}
+              </option>
+            ))}
+        </select>
+        {message.length ? <p className={Styles.message}>{message}</p> : ""}
+        {seller.id.length <= 2 ? (
+          <div className={Styles.containInput}>
+            <input
+              className={Styles.password}
+              type='password'
+              onChange={(e) => handleChanguePassword(e)}
+              placeholder='contraseña'
+            />{" "}
+            <button className={Styles.submit} onClick={(e) => submit(e)}>
+              iniciar sesion
+            </button>{" "}
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
     </div>
   );
 }

@@ -1,25 +1,49 @@
 .cardContainer {
-  text-align: center;
-  background-color: rgb(17, 16, 16);
-  height: 120%;
-  width: 100%;
-  min-width: 120px;
-  min-height: 200px;
-  border-radius: 16px;
-  color: rgb(255, 249, 249);
-  padding: 2%;
-  margin-bottom: 5%;
+  background: rgba(0, 0, 0, 0.707);
+  width: 250px;
+  height: 300px;
+  padding: 30px;
+  border: 3px solid rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: rgb(0, 0, 0) 2px 2px 22px;
+  transition-duration: 3s;
+}
+.cardContainer:hover {
+  background: rgb(0, 0, 0);
+  transition-duration: 2s;
 }
 
 .img {
-  width: 60%;
-  height: 50%;
-  border-radius: 100%;
+  margin: 20px;
+  height: 200px;
 }
 
 .name {
-  color: aqua;
+  margin: 0%;
+  font-size: 20px;
+  color: rgb(255, 255, 255);
+  text-shadow: rgb(255, 255, 255) 2px 2px 20px;
 }
 .vendedor {
-  color: red;
+  margin: 0%;
+  font-size: 20px;
+  color: rgb(255, 255, 255);
+  text-shadow: rgb(255, 255, 255) 2px 2px 20px;
+}
+@media screen and (max-width: 800px) {
+  .cardContainer {
+    height: 200px;
+    width: 200px;
+  }
+
+  .img {
+    margin: 20px;
+    height: 120px;
+  }
+  .name {
+    font-size: 15px;
+  }
+  .vendedor {
+    font-size: 15px;
+  }
 }

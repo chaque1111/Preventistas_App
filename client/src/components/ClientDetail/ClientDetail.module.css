@@ -1,0 +1,61 @@
+.container {
+  height: 100vh;
+  background: rgb(0, 0, 0);
+  border-top-right-radius: 200%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.containerContenido {
+  min-height: 650px;
+  min-width: 1200px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.597);
+  border: 2px solid white;
+  display: flex;
+  flex-direction: row;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+}
+.imgContainer {
+  margin-right: 25px;
+}
+.containInfo > text {
+  font-size: 20px;
+}
+.textInfo {
+  font-size: 30px;
+  color: #08a4ff;
+}
+.activo {
+  color: #4edd0b;
+  text-shadow: #51ff00d2 1px 1px 20px;
+}
+.inactivo {
+  color: #f30909;
+  text-shadow: #ff0000d2 2px 2px 20px;
+}
+.obsContain {
+  padding: 20px;
+  margin-top: 20px;
+  min-width: 1170px;
+  max-width: 1170px;
+  height: auto;
+  background-color: rgba(0, 0, 0, 0.709);
+  border: 2px solid white;
+  display: flex;
+}
+.observacion {
+  font-size: 20px;
+  color: white;
+}
+.obsTitle {
+  font-size: 30px;
+  color: #08a4ff;
+  text-decoration: underline;
+}
