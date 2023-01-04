@@ -56,7 +56,7 @@ const PrecargaClientes = async () => {
         fechaUC: e.FechaUC ? e.FechaUC : new DATE(),
         fechaAlta: e.FechaAlta ? e.FechaAlta : "not found",
         email: e.email ? e.email : "not found",
-        observaciones: e.Oservaciones ? e.Oservaciones : "not found",
+        observaciones: e.Oservaciones ? e.Oservaciones : "sin observaciones",
       };
     });
 
@@ -122,9 +122,113 @@ const getClientById = async (req, res) => {
   }
 };
 
+let Clientes;
+const getClientBySeller = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const vendedor = await Vendedor.findByPk(id, {include: Cliente});
+    Clientes = vendedor.clientes.map((e) => {
+      return {
+        id: e.id,
+        name: e.name,
+        rzsocial: e.rzsocial,
+        localidad: e.localidad,
+        direccion: e.direccion,
+        provincia: e.provincia,
+        nombreVendedor: e.nombreVendedor,
+        zona: e.zona,
+        activo: e.activo,
+        vendedorId: 5,
+      };
+    });
+    res.status(200).json(Clientes);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+};
+
+const searchClientsBySeller = async (req, res) => {
+  try {
+    const sellerId = req.body.id;
+    const nameClient = req.body.name;
+    const vendedor = await Vendedor.findByPk(sellerId, {include: Cliente});
+    let arrayClientes = vendedor.clientes;
+    arrayClientes = arrayClientes.filter((e) =>
+      e.name.toUpperCase().includes(nameClient.toUpperCase())
+    );
+    Clientes = arrayClientes.map((e) => {
+      return {
+        id: e.id,
+        name: e.name,
+        rzsocial: e.rzsocial,
+        localidad: e.localidad,
+        direccion: e.direccion,
+        provincia: e.provincia,
+        nombreVendedor: e.nombreVendedor,
+        zona: e.zona,
+        activo: e.activo,
+        vendedorId: 5,
+      };
+    });
+
+    arrayClientes.length
+      ? res.status(200).json(Clientes)
+      : res
+          .status(400)
+          .send("no se encontraron clientes con esas características");
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
+const filterClients = async (req, res) => {
+  try {
+    let CopyClients = Clientes;
+    const activo = req.body.activo;
+    const localidad = req.body.localidad;
+    console.log(localidad, activo);
+
+    if (activo !== "") {
+      CopyClients = CopyClients.filter((e) => e.activo.toString() === activo);
+    }
+    if (localidad !== "") {
+      CopyClients = CopyClients.filter((e) => e.localidad === localidad);
+    }
+
+    CopyClients.length
+      ? res.status(200).send(CopyClients)
+      : res.status(400).send("no se encontraron coincidencias");
+  } catch (e) {
+    res.status(400).send(e);
+  }
+};
+
+const getLocalidades = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const vendedor = await Vendedor.findByPk(id, {include: Cliente});
+    if (vendedor) {
+      const clientes = vendedor.clientes;
+      const localidades = [];
+      clientes.map((e) =>
+        !localidades.includes(e.localidad) ? localidades.push(e.localidad) : ""
+      );
+      res.status(200).json(localidades);
+    } else {
+      res.status(200).json("no existe el vendedor");
+    }
+  } catch (error) {
+    res.send(error);
+  }
+};
+
 module.exports = {
   ExcelToJson,
   PrecargaClientes,
   getAllClients,
   getClientById,
+  getClientBySeller,
+  searchClientsBySeller,
+  getLocalidades,
+  filterClients,
 };

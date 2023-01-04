@@ -1,0 +1,11 @@
+.container {
+  flex-wrap: nowrap;
+}
+
+.card {
+  display: inline-block;
+  width: 15%;
+  height: 15%;
+  min-width: 200px;
+  margin: 3%;
+}
