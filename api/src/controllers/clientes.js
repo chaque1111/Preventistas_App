@@ -59,24 +59,14 @@ const PrecargaClientes = async () => {
         observaciones: e.Oservaciones ? e.Oservaciones : "sin observaciones",
       };
     });
-
-    await Cliente.bulkCreate(arrayC);
-    let arreglo = await Cliente.findAll();
-
-    for (let i = 0; i < arreglo.length; i++) {
-      let cliente = await Cliente.findOne({where: {id: arreglo[i].id}});
+    let arreglo = [];
+    for (let i = 0; i < arrayC.length; i++) {
       let vendedor = await Vendedor.findOne({
-        where: {name: arreglo[i].nombreVendedor},
+        where: {name: arrayC[i].nombreVendedor},
       });
-      await Cliente.update(
-        {vendedorId: vendedor.id},
-        {
-          where: {id: cliente.id},
-        }
-      );
-      // cliente.vendedorId = vendedor.id;
-      // await cliente.save();
+      arreglo.push({...arrayC[i], vendedorId: vendedor.id});
     }
+    await Cliente.bulkCreate(arreglo);
   } catch (e) {
     console.log(e);
   }
