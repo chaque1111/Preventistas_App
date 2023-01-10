@@ -1,37 +1,38 @@
-import Cookies from "universal-cookie";
+import Cookies from 'universal-cookie';
 
 const initialState = {
   allClients: [],
   clienstBySeller: [],
-  client: "",
-  seller: "",
+  client: '',
+  seller: '',
   selectClients: {},
   allProducts: [],
   product: {},
   allSellers: [],
   user: [],
   productId: {},
-  orderNumber: "",
+  orderNumber: '',
+  orderId: [],
   estado: true,
 };
 
-function reducer(state = initialState, {type, payload}) {
+function reducer(state = initialState, { type, payload }) {
   const cookie = new Cookies();
   switch (type) {
-    case "GET_SELLERS":
+    case 'GET_SELLERS':
       return {
         ...state,
         allSellers: payload,
       };
 
-    case "GET_SELLERS_ID":
+    case 'GET_SELLERS_ID':
       return {
         ...state,
         selectClients: payload,
         seller: payload.name,
       };
 
-    case "FILTER_BY_SELLERS":
+    case 'FILTER_BY_SELLERS':
       const allSellers = state.allSellers;
 
       const sellerFilter = allSellers.filter(
@@ -42,73 +43,81 @@ function reducer(state = initialState, {type, payload}) {
         ...state,
         selectClients: sellerFilter,
       };
-    case "GET_CLIENTS":
+    case 'GET_CLIENTS':
       return {
         ...state,
         allClients: payload,
         // selectClients: payload,
       };
 
-    case "GET_PRODUCTS":
+    case 'GET_PRODUCTS':
       return {
         ...state,
         allProducts: payload,
       };
-    case "LOG_ING":
-      cookie.set("userId", payload.id, {path: "/"});
-      cookie.set("userName", payload.name, {path: "/"});
-      cookie.set("userlocalidad", payload.localidad, {path: "/"});
+    case 'LOG_ING':
+      cookie.set('userId', payload.id, { path: '/' });
+      cookie.set('userName', payload.name, { path: '/' });
+      cookie.set('userlocalidad', payload.localidad, { path: '/' });
       return {
         ...state,
         user: payload,
       };
     ///clientes
-    case "GET_CLIENTS":
+    case 'GET_CLIENTS':
       return {
         ...state,
         allClients: payload,
       };
-    case "CLIENTS_BY_SELLER":
+    case 'CLIENTS_BY_SELLER':
       return {
         ...state,
         clienstBySeller: payload,
       };
-    case "GET_CLIENT_BY_ID":
+    case 'GET_CLIENT_BY_ID':
       return {
         ...state,
         selectClient: payload,
+        client: payload.name,
       };
-    case "SEARCH_CLIENT":
+    case 'SEARCH_CLIENT':
       return {
         ...state,
         clienstBySeller: payload,
       };
     //products
-    case "REFRESH":
+    case 'REFRESH':
       return {
         ...state,
         user: [],
+        // clienstBySeller: [],
       };
 
-    case "GET_PRODUCT_ID":
+    case 'GET_PRODUCT_ID':
       return {
         ...state,
         productId: payload,
       };
 
-    case "GET_ORDER_NUMBER":
+    case 'GET_ORDER_NUMBER':
       return {
         ...state,
         orderNumber: payload,
       };
 
-    case "OPEN_TRANSACTION":
+    case 'GET_ORDER_ID':
+      return {
+        ...state,
+        orderId: payload,
+      };
+
+    case 'OPEN_TRANSACTION':
       return {
         ...state,
         estado: false,
       };
 
-    case "CLOSE_TRANSACTION":
+    case 'CLOSE_TRANSACTION':
       return {
         ...state,
         estado: true,

@@ -18,6 +18,17 @@ import {
 } from "../../redux/action";
 import getDate from "../../utils/functions/getDate";
 import Cookies from "universal-cookie";
+const Swal = require('sweetalert2')
+
+
+function Validate(input) {
+  let errors = {};
+  console.log(input)
+  if (!input.clienteId) errors.client = "Se requiere elegir un cliente";
+  if (!input.descripcion) errors.products = "Se requiere elegir un producto";
+  console.log(errors)
+  return errors;
+}
 
 export default function NewTransactions() {
   const cookies = new Cookies();
@@ -26,7 +37,10 @@ export default function NewTransactions() {
 
   useEffect(async () => {
     await dispatch(openTransaction());
+    await dispatch((getSellersId(cookies.get("userId"))))
   }, [dispatch]);
+
+  const [errors, setErrors] = useState({});
 
   const [input, setInput] = useState({
     vendedorId: "",
@@ -41,33 +55,37 @@ export default function NewTransactions() {
     orderNumber: "",
   });
 
+  const sellers = useSelector((state) => state.selectClients)
+
   const fecha = getDate();
-
-  function handleSelectSellers(e) {
-    dispatch(getSellersId(e.target.value));
-    setInput({
-      ...input,
-      vendedorId: e.target.value,
-    });
-  }
-
-  if (input.vendedorId) {
-    const initValue = "sellerSelect";
-    document.getElementById("Sellers").value = initValue;
-  }
+  
+  
+  
+       
+    
 
   function handleSelectClients(e) {
     dispatch(getClientById(e.target.value));
     setInput({
       ...input,
+      vendedorId: sellers.id,
       clienteId: e.target.value,
     });
+
+    // setErrors(
+    //   Validate({
+    //     ...input,
+    //     vendedorId: sellers.id,
+    //     clienteId: e.target.value,
+    //   })
+    // )
   }
 
+ 
   if (input.clienteId) {
-    const initValue = "clientSelect";
-    document.getElementById("Clients").value = initValue;
+    document.getElementById('Clients').style.display = 'none';  
   }
+
 
   if (!input.fecha) {
     (function handleDate() {
@@ -132,6 +150,8 @@ export default function NewTransactions() {
         descripcion: "",
       });
 
+      
+
       const idProduct = await dispatch(getProductId(e.target.value));
       const iva = 1 + idProduct.payload.porcentaje / 100;
       const unitCost = parseInt(idProduct.payload.costoBonif);
@@ -146,6 +166,14 @@ export default function NewTransactions() {
         costo: unitCostIva,
         subTotal: unitCostIva * input.cantidad,
       });
+
+      setErrors(
+        Validate({
+              ...input,
+              descripcion: idProduct.payload.descripcion,
+            })
+      )
+
     } else {
       e.target.value = input.descripcion;
       return alert(
@@ -156,6 +184,10 @@ export default function NewTransactions() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    setErrors(Validate(input));
+    const errors = Validate(input);
+
     await dispatch(postTransac(input));
     const initValue = "default";
 
@@ -177,7 +209,7 @@ export default function NewTransactions() {
 
   async function handleFinishOrder(e) {
     e.preventDefault();
-    await modifyOrderNumber();
+    modifyOrderNumber();
     setInput({
       vendedorId: "",
       clienteId: "",
@@ -191,16 +223,38 @@ export default function NewTransactions() {
       orderNumber: "",
     });
 
+
+    
+    Swal.fire({
+      title: 'Confirmación!',
+      text: 'Desea continuar?',
+      icon: 'question',
+      showDenyButton: true,
+      confirmButtonText: 'Guardar',
+      denyButtonText: 'Verificar pedido',
+      denyButtonColor: "#23C41C"
+    }).then((result)=>{
+      if (result.isConfirmed) {
+        Swal.fire('Pedido cargado!', '', 'success')
+      } else if (result.isDenied) {
+        Swal.fire('Pedido no cargado', '', 'info')
+      }
+    })
+
+
+    history.push('/user');
     const initValue = "default";
 
-    document.getElementById("Sellers").value =
-      document.getElementById("Clients").value =
+
+
+    // document.getElementById("Sellers").value =
+    //   document.getElementById("Clients").value =
       document.getElementById("Products").value =
         initValue;
 
     // dispatch(closeTransaction());
-    history.push("/");
   }
+
 
   useEffect(() => {
     dispatch(getAllSellers());
@@ -212,15 +266,21 @@ export default function NewTransactions() {
 
   const productId = useSelector((state) => state.productId);
 
-  const sellers = useSelector((state) => state.allSellers);
+  // const sellers = useSelector((state) => state.allSellers);
 
-  const clients = useSelector((state) => state.selectClients);
+  // const clients = useSelector((state) => state.selectClients);
 
   const chosenSeller = useSelector((state) => state.seller);
 
   const chosenClient = useSelector((state) => state.client);
-  console.log(chosenClient);
+  
 
+  const dataUser = useSelector((state) => state.user)
+  
+  const clients = useSelector((state) => state.clienstBySeller)
+  
+
+ 
   return (
     <div className={Styles.containMaster}>
       <div className={Styles.contain}>
@@ -228,46 +288,27 @@ export default function NewTransactions() {
           <form className={Styles.form} onSubmit={(e) => handleSubmit(e)}>
             <div className={Styles.masterOrden}>
               <div className={Styles.containOrden}>
+                <div>Vendedor: {sellers.name}</div>
                 <div>Orden de compra nro: {input.orderNumber}</div>
                 <div>{fecha}</div>
               </div>
             </div>
             <div className={Styles.masterSellClient}>
-              <div className={Styles.containSellClient}>
-                <select
-                  className={Styles.select}
-                  id={"Sellers"}
-                  defaultValue={"default"}
-                  onChange={(e) => handleSelectSellers(e)}
-                >
-                  <option name={"default"} value={"default"} disabled>
-                    Seleccionar Vendedor
-                  </option>
-                  {!input.vendedorId ? (
-                    sellers &&
-                    sellers.map((el) => (
-                      <option value={el.vendedor.id} key={el.vendedor.name}>
-                        {el.vendedor.name}
-                      </option>
-                    ))
-                  ) : (
-                    <option value={"sellerSelect"}>
-                      Vendedor seleccionado
-                    </option>
-                  )}
-                </select>
+              <div className={Styles.containSellClient}>     
+                 
                 <select
                   className={Styles.select}
                   id={"Clients"}
                   defaultValue={"default"}
                   onChange={(e) => handleSelectClients(e)}
+                  disabled={input.clienteId}
                 >
                   <option value={"default"} disabled>
                     Seleccionar cliente
                   </option>
                   {!input.clienteId ? (
-                    clients.clientes &&
-                    clients.clientes.map((el) => (
+                    clients &&
+                    clients.map((el) => (
                       <option value={el.id} key={el.id}>
                         {el.name}
                       </option>
@@ -278,11 +319,15 @@ export default function NewTransactions() {
                 </select>
               </div>
             </div>
+                {errors.client && <h6>{errors.client}</h6>}
 
             <div className={Styles.masterChosenPeople}>
               <div className={Styles.containChosenPeople}>
-                <div className={Styles.chosenSeller}>{chosenSeller}</div>
-                <div className={Styles.chosenClient}>{chosenClient}</div>
+                {/* <div className={Styles.chosenSeller}>{chosenSeller}</div> */}
+                {input.clienteId ?
+                (<div id={"chosenClient"} className={Styles.chosenClient}>Cliente: {chosenClient}</div>)
+                :(<div></div>)
+}
               </div>
             </div>
             {/* <div className={Styles.principalProduct}> */}
@@ -331,11 +376,12 @@ export default function NewTransactions() {
                       className={Styles.btn}
                       type='submit'
                       value='Agregar'
-                    />
+                      />
                   </div>
                 </div>
               </div>
             </div>
+                      {errors.products && <h6>{errors.products}</h6>}
             {/* </div> */}
           </form>
           <div className={Styles.containFinishOrder}>

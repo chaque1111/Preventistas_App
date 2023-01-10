@@ -37,7 +37,7 @@
   .containSellClient{
     align-items: center;
     display:flex;
-    justify-content: space-between;
+    justify-content:center;
     width: 100%;
     max-width:600px;
   }
@@ -89,7 +89,7 @@
   .containChosenPeople{
     align-items: center;
     display:flex;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     max-width:600px;
   }
@@ -103,16 +103,16 @@
     margin: 0;
     
     top: 0;
-    justify-content: right;
+    justify-content: center;
 
   }
 
   .containOrden{
     align-items: center;
     display:flex;
-    justify-content: space-between;
+    justify-content: space-around;
     width: 100%;
-    max-width:450px;
+    max-width:100%;
     margin-right:3em
   }
   .masterButton{

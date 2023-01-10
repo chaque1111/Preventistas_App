@@ -1,13 +1,17 @@
-const {Router} = require("express");
+const { Router } = require('express');
 const {
   createTransaction,
   getNumberOnder,
+  getOrder,
   putNumberOrder,
-} = require("../controllers/transaccion");
+  getOrderById,
+} = require('../controllers/transaccion');
 
 const router = Router();
 
-router.get("/pedido", getNumberOnder);
-router.put("/pedido/:number", putNumberOrder);
-router.post("/", createTransaction);
+router.get('/pedido', getNumberOnder);
+router.get('/pedido/lista', getOrder);
+router.get('/pedido/lista/:numberOrder', getOrderById);
+router.put('/pedido/:number', putNumberOrder);
+router.post('/', createTransaction);
 module.exports = router;

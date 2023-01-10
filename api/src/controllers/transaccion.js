@@ -1,4 +1,10 @@
-const {Transaccion, Variable, Vendedor, Cliente, Inventario} = require("../db");
+const {
+  Transaccion,
+  Variable,
+  Vendedor,
+  Cliente,
+  Inventario,
+} = require('../db');
 
 const createTransaction = async (req, res) => {
   try {
@@ -56,6 +62,39 @@ const getNumberOnder = async (req, res) => {
   }
 };
 
+const getOrder = async (req, res) => {
+  try {
+    const allOrder = await Transaccion.findAll();
+    const order = allOrder.map((e) => {
+      return {
+        vendedorId: e.vendedorId,
+        clienteId: e.clienteId,
+        inventarioId: e.inventarioId,
+        descripcion: e.descripcion,
+        cantidad: e.cantidad,
+        orderNumber: e.orderNumber,
+      };
+    });
+    res.status(200).json(order);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+};
+
+const getOrderById = async (req, res) => {
+  try {
+    let { numberOrder } = req.params;
+    const order = await Transaccion.findAll({
+      where: {
+        orderNumber: numberOrder,
+      },
+    });
+    res.status(200).json(order);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+};
+
 const putNumberOrder = async (req, res) => {
   try {
     const newNumber = req.params.number;
@@ -71,6 +110,8 @@ const putNumberOrder = async (req, res) => {
 module.exports = {
   createTransaction,
   getNumberOnder,
+  getOrder,
+  getOrderById,
   putNumberOrder,
   createVariable,
 };
