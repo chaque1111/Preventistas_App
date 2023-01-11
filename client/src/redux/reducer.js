@@ -83,6 +83,12 @@ function reducer(state = initialState, {type, payload}) {
         clienstBySeller: payload,
       };
 
+    case "SEARCH_PRODUCT":
+      return {
+        ...state,
+        allProducts: payload,
+      };
+
     case "FILTER_CLIENTS":
       return {
         ...state,

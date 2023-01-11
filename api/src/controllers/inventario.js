@@ -71,8 +71,26 @@ const getProductById = async (req, res) => {
   }
 };
 
+const searchProduct = async (req, res) => {
+  try {
+    const {name} = req.body;
+    console.log(name);
+    const products = await Inventario.findAll();
+
+    let productsFilters = products.filter((e) =>
+      e.descripcion.toUpperCase().includes(name.toUpperCase())
+    );
+    productsFilters.length
+      ? res.status(200).send(productsFilters)
+      : res.status(300).send("no se encontraron resultados");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   PrecargaInventario,
   getAllProducts,
   getProductById,
+  searchProduct,
 };

@@ -89,6 +89,20 @@ export function searchClient(input) {
     }
   };
 }
+export function searchProduct(input) {
+  return async (dispatch) => {
+    try {
+      let obj = {
+        name: input,
+      };
+      const products = await axios.put("/inventario/search", obj);
+      console.log(products.data);
+      return dispatch({type: "SEARCH_PRODUCT", payload: products.data});
+    } catch (error) {
+      window.alert(error.response.data);
+    }
+  };
+}
 
 export function filterClients() {
   return async (dispatch) => {

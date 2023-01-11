@@ -13,7 +13,7 @@ import HomeUser from "./components/HomeUser/HomeUser";
 import {useSelector} from "react-redux";
 import ClientDetail from "./components/ClientDetail/ClientDetail";
 import Products from "./components/Products/Products";
-import ProductDetail from "./components/ProductDetail/ProductDetail";
+import ProductDetail from "./components/Products/Detail/ProductDetail";
 function App() {
   return (
     <div className='App'>

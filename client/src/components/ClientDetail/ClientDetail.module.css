@@ -59,3 +59,48 @@
   color: #08a4ff;
   text-decoration: underline;
 }
+
+@media screen and (max-width: 1200px) {
+  .container {
+    height: 110vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+  }
+  .containInfo > h1 {
+    font-size: 20px;
+  }
+  .containerContenido {
+    width: 100vw;
+    min-width: 0px;
+    min-height: 0px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+  }
+  .textInfo {
+    font-size: 20px;
+  }
+  .imgContainer {
+    margin: 0px;
+  }
+  .imgContainer > img {
+    height: 200px;
+  }
+  .obsContain {
+    padding: 20px;
+    margin-top: 20px;
+    min-width: 20px;
+    width: 100vw;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.709);
+    border: 2px solid white;
+    display: flex;
+    justify-content: center;
+  }
+  .obsTitle {
+    font-size: 20px;
+  }
+}
